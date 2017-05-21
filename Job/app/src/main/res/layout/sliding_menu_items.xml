@@ -4,26 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="180sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="130sp"
-            android:layout_height="130sp"
-            android:src="@drawable/user"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageView3"
-            app:civ_border_width="2sp"
-            app:civ_border_color="@color/colorAccent"/>
-    </RelativeLayout>
-
     <ScrollView
+        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/relativeLayout"
@@ -32,14 +14,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:background="@color/colorAccent"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="479dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 >
@@ -291,6 +273,34 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180sp"
+        android:id="@+id/relativeLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="130sp"
+            android:layout_height="130sp"
+            android:src="@drawable/user"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/imageView3"
+            app:civ_border_width="2sp"
+            app:civ_border_color="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/userNameTxt"
+            android:layout_marginTop="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANDIDATE NAME"
+            android:layout_below="@+id/imageView3"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

@@ -29,39 +29,8 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/bottomLayout"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:background="@drawable/fillbaoundry"
-            android:gravity="center"
-            android:text="DOWNLOAD"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/downloadTxtView"
-            android:layout_weight="1" />
-
-        <TextView
-            android:background="@drawable/fillbaoundry"
-            android:gravity="center"
-            android:text="CONTACT"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/contactTxtView"
-            android:layout_weight="1" />
-    </LinearLayout>
 
     <LinearLayout
-        android:layout_above="@+id/bottomLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,9 +42,10 @@
             android:gravity="center"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="170sp">
+            android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="15sp"
                 android:layout_width="140sp"
                 android:layout_height="140sp"
                 android:src="@drawable/user"
@@ -83,16 +53,26 @@
                 app:civ_border_width="2sp"
                 app:civ_border_color="@color/colorAccent"/>
 
+
+            <TextView
+
+                android:layout_marginTop="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANDIDATE NAME"/>
+
         </LinearLayout>
 
         <ImageView
+            android:layout_marginTop="20sp"
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
-            android:layout_height="50sp"
-            app:srcCompat="@drawable/curve"
+            android:layout_height="30sp"
+            android:src="@drawable/curve"
             android:id="@+id/imageView6" />
 
         <LinearLayout
-            android:background="#ffffff"
+
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -103,6 +83,7 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:background="#ffffff"
                     android:padding="50sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -208,7 +189,42 @@
                         android:text="A results-driven, customer-focused, articulate and analytical Senior Software Engineer who can think “out of the box”. Strong in design and integration problem-solving skills. Expert in Java, C#, .NET, and T-SQL with database analysis and design. Skilled in developing business plans, requirements specifications, user documentation, and architectural systems research. "/>
 
                 </LinearLayout>
+
+
             </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/bottomLayout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:background="@drawable/fillbaoundry"
+                    android:gravity="center"
+                    android:text="DOWNLOAD"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/downloadTxtView"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:background="@drawable/fillbaoundry"
+                    android:gravity="center"
+                    android:text="CONTACT"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/contactTxtView"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 

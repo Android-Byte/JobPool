@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/view"
         android:layout_marginBottom="1sp"
         android:background="@color/white"
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="#000000"
-                android:text="Condidate Name"
+                android:text="Candidate Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView" />
@@ -35,8 +36,9 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="16sp"
                     android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/person_black"
+                    android:drawableLeft="@drawable/ic_location"
                     android:textColor="#000000"
                     android:text="Indore"
                     android:layout_width="wrap_content"
@@ -45,8 +47,9 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:textSize="16sp"
                     android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/person_black"
+                    android:drawableLeft="@drawable/ic_library"
                     android:textColor="#000000"
                     android:text="0 to 2 year"
                     android:layout_width="wrap_content"
@@ -62,8 +65,9 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="16sp"
                     android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/person_black"
+                    android:drawableLeft="@drawable/assignment_list"
                     android:textColor="#000000"
                     android:text="Android developer"
                     android:layout_width="match_parent"
@@ -114,7 +118,11 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
     </LinearLayout>
+    <View
+        android:layout_marginBottom="0.5sp"
+        android:layout_below="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5sp"
+        android:background="#000000"></View>
 </RelativeLayout>

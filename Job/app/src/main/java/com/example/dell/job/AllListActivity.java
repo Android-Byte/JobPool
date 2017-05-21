@@ -32,7 +32,10 @@ public class AllListActivity extends SlidingFragmentActivity {
 
         init();
         clickListener();
+
         setBehindView();
+
+
         sm = getSlidingMenu();
         sm.setShadowWidthRes(R.dimen.shadow_width);
         sm.setShadowDrawable(R.drawable.shadow);
@@ -42,6 +45,13 @@ public class AllListActivity extends SlidingFragmentActivity {
         sm.setSlidingEnabled(false);
 
      }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.stay, R.anim.slide_down);
+    }
 
     private void setBehindView() {
         setBehindContentView(R.layout.menu_slide);

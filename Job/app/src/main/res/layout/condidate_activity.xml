@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/parentLayout"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
@@ -15,7 +16,7 @@
         <TextView
             android:textStyle="bold"
             android:textColor="#000000"
-            android:text="CONDIDATE  RAGISTRATION"
+            android:text="CANDIDATE  RAGISTRATION"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView2"
@@ -43,7 +44,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_name"
+                <EditText android:id="@+id/nameEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -60,7 +61,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_userid"
+                <EditText android:id="@+id/useridEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -76,7 +77,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_email_id"
+                <EditText android:id="@+id/email_idEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -92,7 +93,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_password"
+                <EditText android:id="@+id/passwordEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -108,11 +109,12 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_phone"
+                <EditText android:id="@+id/phoneEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="PHONE"
+                    android:maxLength="10"
                     android:textSize="13dp"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -133,7 +135,6 @@
                 android:orientation="horizontal"
                 android:padding="5dp">
                 <CheckBox
-
                     android:id="@+id/checkbox_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -147,7 +148,6 @@
                     android:layout_height="match_parent" />
 
                 <CheckBox
-
                     android:id="@+id/checkbox_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

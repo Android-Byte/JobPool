@@ -5,13 +5,16 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +47,6 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
     Activity mcont;
 
     public WebserviceHelper() {
-
     }
 
     public WebserviceHelper(RequestReceiver context, Activity mcontext) {
@@ -96,70 +100,488 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
         JSONObject jsonData = new JSONObject();
         switch (action) {
 
-            case Constant.SINGUP:
-
-                String[] regParm = new String[3];
-                httppost = new HttpPost(Constant.SIGNUP_URL);
-                Log.e("", "Constant.SIGNUP_URL : " + Constant.SIGNUP_URL);
+            case Constant.EMPLOYER_RAGISTRATION:
+                String[] emloyer = new String[3];
+                httppost = new HttpPost(Constant.EMPLOYER_RAGISTRATION_URL);
                 try {
-                    MultipartEntity entity = new MultipartEntity();
                     try {
-                        File file = new File("");
-                        FileBody bin = new FileBody(file);
-                        entity.addPart("image", bin);
-                    } catch (Exception e) {
-                        Log.v("Exception in Image", "" + e);
+
+                        jsonData.accumulate("company_name", Constant.COMPANY_NAME);
+                        jsonData.accumulate("contact_person", Constant.CONTACTPERSON);
+                        jsonData.accumulate("email", Constant.EMAIL);
+                        jsonData.accumulate("password", Constant.PASSWORD);
+                        jsonData.accumulate("phone", Constant.PHONE_NUMBER);
+                        jsonData.accumulate("current_requirment", Constant.CURRENT_REQUIRMENT);
+
+                        jsonData.accumulate("experience", Constant.EXPERIENCE);
+                        jsonData.accumulate("skill", Constant.SKILLES);
+                        jsonData.accumulate("job_role", Constant.JOBROLL);
+                        jsonData.accumulate("location", Constant.LOCATION);
+                        jsonData.accumulate("address", Constant.ADDRESS);
+
+                        Log.e("","URL "+Constant.EMPLOYER_RAGISTRATION_URL);
+                        Log.e("Json : ",""+jsonData.toString(5));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
 
-                    /*entity.addPart("user_type", new StringBody(Constant.USER_TYPE));
-                    entity.addPart("device_token", new StringBody(Constant.TOKEN));*/
-
-                    httppost.setEntity(entity);
-                    try {
-                        response1 = httpclient.execute(httppost);
-                        Log.d("myapp", "response " + response1.getEntity());
-                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                     InputStream inputStream = response1.getEntity().getContent();
-                    InputStreamReader inputStreamReader = new InputStreamReader(
-                            inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(
-                            inputStreamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String bufferedStrChunk = null;
-                    String encodeRes = "";
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
                     JSONObject object = null;
 
-                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(bufferedStrChunk);
-                        encodeRes = stringBuilder.toString();
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
                         try {
-                            object = new JSONObject(encodeRes);
-                            Log.d("", "jsonObj responce... " + object);
-                            regParm[0] = object.getString("success");
-                            regParm[1] = object.getString("message");
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+
+                            emloyer[0] = object.getString("success");
+                            emloyer[1] = object.getString("message");
+
+                            try {
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            regParm[0] = object.getString("success");
-                            regParm[1] = object.getString("message");
+                            emloyer[0] = object.getString("success");
+                            emloyer[1] = object.getString("message");
                         }
                         break;
                     }
-
-                    return regParm;
-
+                    return emloyer;
                 } catch (Exception e) {
-                    // TODO: handle exception
+                    e.printStackTrace();
                 }
-
                 break;
 
+            case Constant.CONDIDATE_RAGISTRATION:
+                String[] signParm = new String[3];
+                httppost = new HttpPost(Constant.CONDIDATE_RAGISTRATION_URL);
+                try {
+                    try {
+
+                        jsonData.accumulate("name", Constant.NAME);
+                        jsonData.accumulate("user_name", Constant.USER_NAME);
+                        jsonData.accumulate("email", Constant.EMAIL);
+                        jsonData.accumulate("password", Constant.PASSWORD);
+                        jsonData.accumulate("phone", Constant.PHONE_NUMBER);
+                        jsonData.accumulate("gender", Constant.GENDER);
+
+                        Log.e("","URL "+Constant.CONDIDATE_RAGISTRATION_URL);
+                        Log.e("Json : ",""+jsonData.toString(5));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+
+                            signParm[0] = object.getString("success");
+                            signParm[1] = object.getString("message");
+
+                            try {
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            signParm[0] = object.getString("success");
+                            signParm[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return signParm;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Constant.LOGIN:
+                String[] login = new String[3];
+                httppost = new HttpPost(Constant.LOGIN_URL);
+                try {
+                    try {
+
+                        jsonData.accumulate("email", Constant.EMAIL);
+                        jsonData.accumulate("password", Constant.PASSWORD);
+
+                        Log.e("","URL "+Constant.EMPLOYER_RAGISTRATION_URL);
+                        Log.e("Json : ",""+jsonData.toString(5));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+
+                            login[0] = object.getString("success");
+                            login[1] = object.getString("message");
+
+
+                            try {
+                                JSONObject data =  object.getJSONObject("data");
+                                Constant.USER_ID = data.getString("user_id");
+                                Constant.USER_NAME = data.getString("username");
+                                Constant.EMAIL = data.getString("email");
+                                Constant.PHONE_NUMBER = data.getString("phone");
+                                Constant.LOCATION = data.getString("location");
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            login[0] = object.getString("success");
+                            login[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return login;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Constant.LOGOUT:
+                String[] logout = new String[3];
+                httppost = new HttpPost(Constant.LOGOUT_URL);
+                try {
+                    try {
+
+                        jsonData.accumulate("email", Constant.EMAIL);
+
+                        Log.e("","URL "+Constant.LOGOUT_URL);
+                        Log.e("Json : ",""+jsonData.toString(5));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+
+                            logout[0] = object.getString("success");
+                            logout[1] = object.getString("message");
+
+                            try {
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            logout[0] = object.getString("success");
+                            logout[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return logout;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Constant.FORGOTPASSWORD:
+                String[] forgotpassword = new String[3];
+                httppost = new HttpPost(Constant.FORGOT_URL);
+                try {
+                    try {
+
+                        jsonData.accumulate("email", Constant.EMAIL);
+
+                        Log.e("","URL "+Constant.FORGOT_URL);
+                        Log.e("Json : ",""+jsonData.toString(5));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+
+                            forgotpassword[0] = object.getString("success");
+                            forgotpassword[1] = object.getString("message");
+
+                            try {
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            forgotpassword[0] = object.getString("success");
+                            forgotpassword[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return forgotpassword;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+
+            case Constant.CHANGEPASSWORD:
+                String[] changepassword = new String[3];
+                httppost = new HttpPost(Constant.CHANGE_PASSWORD_URL);
+                try {
+                    try {
+
+                        jsonData.accumulate("email", Constant.EMAIL);
+                        jsonData.accumulate("old_password", Constant.OLDPASSWORD);
+                        jsonData.accumulate("new_password", Constant.PASSWORD);
+
+                        Log.e("","URL "+Constant.FORGOT_URL);
+                        Log.e("Json : ",""+jsonData.toString(5));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+
+                            changepassword[0] = object.getString("success");
+                            changepassword[1] = object.getString("message");
+
+                            try {
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            changepassword[0] = object.getString("success");
+                            changepassword[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return changepassword;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
 
             default:
                 break;

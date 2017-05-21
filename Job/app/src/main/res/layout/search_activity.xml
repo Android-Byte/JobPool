@@ -7,7 +7,7 @@
     <RelativeLayout
         android:background="@color/white"
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -22,6 +22,66 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
+
+        <RelativeLayout
+        android:id="@+id/filterLayout"
+        android:layout_marginBottom="10sp"
+        android:paddingRight="10sp"
+        android:layout_width="60sp"
+        android:layout_height="50sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+
+        <LinearLayout
+            android:background="@drawable/circle_layout"
+            android:orientation="vertical"
+            android:layout_width="50sp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            >
+
+            <ImageView
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:src="@drawable/filter"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:background="@drawable/fillbaoundry"
+        android:layout_width="match_parent"
+        android:layout_height="45sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+
+            android:id="@+id/slidMenuLayout"
+            android:padding="10sp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu"
+                android:id="@+id/imageView2" />
+        </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -88,36 +148,12 @@
         </LinearLayout>
 
         <ImageView
+            android:scaleType="fitXY"
             android:layout_marginTop="30sp"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
-            app:srcCompat="@drawable/curve"
+            android:layout_height="30sp"
+            android:src="@drawable/curve"
             android:id="@+id/imageView4" />
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/topView"
-        android:background="@drawable/fillbaoundry"
-        android:layout_width="match_parent"
-        android:layout_height="45sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <LinearLayout
-            android:id="@+id/slidMenuLayout"
-            android:padding="10sp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/menu"
-                android:id="@+id/imageView2" />
-        </LinearLayout>
-    </RelativeLayout>
 </RelativeLayout>

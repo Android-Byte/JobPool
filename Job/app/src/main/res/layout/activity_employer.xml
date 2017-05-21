@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/parentLayout"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
     <LinearLayout
@@ -37,7 +38,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_name"
+                <EditText android:id="@+id/nameCompanyEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -54,7 +55,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_userid"
+                <EditText android:id="@+id/contactPersonEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -70,7 +71,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_email_id"
+                <EditText android:id="@+id/email_idEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -87,7 +88,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_phone"
+                <EditText android:id="@+id/phoneEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -103,7 +104,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_password"
+                <EditText android:id="@+id/passwordEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -134,7 +135,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_current_requirement"
+                <EditText android:id="@+id/current_requirementEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -151,7 +152,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_experience"
+                <EditText android:id="@+id/experienceEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -168,7 +169,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_skill"
+                <EditText android:id="@+id/skillEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -184,7 +185,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_job_role"
+                <EditText android:id="@+id/job_roleEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -200,7 +201,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_location_emp"
+                <EditText android:id="@+id/locationEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -216,7 +217,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <EditText android:id="@+id/input_address"
+                <EditText android:id="@+id/addressEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
@@ -230,7 +231,7 @@
                     android:orientation="horizontal"
                     android:padding="5dp">
                     <CheckBox
-                        android:id="@+id/checkbox_male"
+                        android:id="@+id/termsCondiationCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -249,6 +250,7 @@
                 android:layout_height="50sp">
 
                 <LinearLayout
+                    android:id="@+id/SubmiTLayout"
                     android:gravity="center"
                     android:background="@drawable/fillbaoundry"
                     android:layout_width="200dp"

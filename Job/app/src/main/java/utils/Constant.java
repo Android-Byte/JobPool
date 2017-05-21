@@ -17,19 +17,42 @@ import java.util.regex.Pattern;
  */
 public class Constant {
 
+	public static final int CONDIDATE_RAGISTRATION = 1;
+	public static final int EMPLOYER_RAGISTRATION = 2;
+	public static final int LOGIN = 3;
+	public static final int LOGOUT = 4;
+	public static final int FORGOTPASSWORD = 5;
+	public static final int CHANGEPASSWORD = 6;
 
-	public static final int SINGUP = 1;
-	public static final int LOGIN = 2;
+	public static String BASE_URL ="http://smtgroup.in/jobpools/wdiapi/index.php/";
+
+	public static String CONDIDATE_RAGISTRATION_URL = BASE_URL+"candidate_register";
+	public static String EMPLOYER_RAGISTRATION_URL = BASE_URL+"employer_register";
+	public static String LOGIN_URL = BASE_URL+"user_login";
+	public static String LOGOUT_URL = BASE_URL+"candidate_logout";
+	public static String FORGOT_URL = BASE_URL+"candidate_forgot_password";
+	public static String CHANGE_PASSWORD_URL = BASE_URL+"candidate_changed_password";
 
 
-//	public static String BASE_URL ="http://freebizoffer.com/apptech/spylo/index.php/";
-	public static String BASE_URL ="http://hireoutsource.com/syplo/api/index.php/";
-
-	public static String SIGNUP_URL = BASE_URL+"Registration";
-	public static String LOGIN_URL = BASE_URL+"Registration/login";
-
-
+	public static String NAME="";
+	public static String USER_NAME="";
+	public static String EMAIL="";
+	public static String PASSWORD="";
+	public static String PHONE_NUMBER="";
+	public static String GENDER="";
 	public static String USER_ID="";
+
+	/*EMPLOYER REGISTER*/
+	public static String COMPANY_NAME="";
+	public static String CONTACTPERSON="";
+	public static String CURRENT_REQUIRMENT="";
+	public static String EXPERIENCE="";
+	public static String SKILLES="";
+	public static String JOBROLL="";
+	public static String LOCATION="";
+	public static String ADDRESS="";
+
+	public static String OLDPASSWORD="";
 
 	public static String EMAIL_PETTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9][.com])?)*$";
 	/*^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$*/

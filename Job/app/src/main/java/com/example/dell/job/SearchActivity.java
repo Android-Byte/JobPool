@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -29,6 +30,7 @@ public class SearchActivity extends SlidingFragmentActivity {
     LinearLayout searchLayout, slidMenuLayout ;
     SearchAdapter adapter;
     SlidingMenu sm;
+    RelativeLayout filterLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class SearchActivity extends SlidingFragmentActivity {
         skillesediTxt = (EditText) findViewById(R.id.skillesediTxt);
         locationEdit = (EditText) findViewById(R.id.locationEdit);
         searchListView = (ListView) findViewById(R.id.searchListView);
+
+        filterLayout = (RelativeLayout)findViewById(R.id.filterLayout);
 
         adapter = new SearchAdapter(SearchActivity.this);
         searchListView.setAdapter(adapter);
@@ -86,6 +90,15 @@ public class SearchActivity extends SlidingFragmentActivity {
 
     public void clickListener(){
 
+        filterLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this,AllListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_up, R.anim.stay);
+            }
+        });
+
         slidMenuLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,8 +109,7 @@ public class SearchActivity extends SlidingFragmentActivity {
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchActivity.this, AllListActivity.class);
-                startActivity(intent);
+
             }
         });
 

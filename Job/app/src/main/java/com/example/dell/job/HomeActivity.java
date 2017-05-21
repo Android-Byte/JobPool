@@ -42,6 +42,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
@@ -50,8 +51,10 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     //Signing Options
+    private SignInButton signInButton;
+
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 100;
@@ -91,10 +94,28 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public  void init(){
 
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+
+        //Initializing google api client
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
         /*Facebook Button*/
         login_button = (LoginButton) findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
         login_button.setReadPermissions("email");
+
+        //Initializing signinbutton
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setScopes(gso.getScopeArray());
+        signInButton.setOnClickListener(this);
 
         facebookLayout = (LinearLayout)findViewById(R.id.facebookLayout);
         googleLayout = (LinearLayout)findViewById(R.id.googleLayout);
@@ -103,14 +124,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         findContactLayout = (LinearLayout)findViewById(R.id.findContactLayout);
 
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        //Initializing google api client
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
     }
 
     private void showAccessTokens() {
@@ -133,27 +146,36 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
-    //After the signing we are calling this function
+    /*//After the signing we are calling this function
     private void handleSignInResult(GoogleSignInResult result) {
         //If the login succeed
         if (result.isSuccess()) {
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
-            String email = acct.getEmail();
-            String name  = acct.getDisplayName();
-            Toast.makeText(getApplicationContext(),"User Name :"+name+"\n Email :"+email,Toast.LENGTH_LONG).show();
+
+
+            Toast.makeText(this, "Login "+acct.getDisplayName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Login "+acct.getEmail(), Toast.LENGTH_LONG).show();
         } else {
             //If login fails
             Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
         }
+    }*/
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("TAG", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(this, "Login "+acct.getDisplayName(), Toast.LENGTH_LONG).show();
+
+        } else {
+            // Signed out, show unauthenticated UI.
+            Toast.makeText(this, "Login faild ", Toast.LENGTH_LONG).show();
+        }
     }
 
-
-    //This function will option signing intent
-    private void signIn() {
-        //Creating an intent
+     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        //Starting intent for result
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -164,7 +186,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         //If signin
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            //Calling a new function to handle signin
             handleSignInResult(result);
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -240,8 +261,9 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         findContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-                startActivity(intent);
+             /*   Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                startActivity(intent);*/
+
             }
         });
 
@@ -270,7 +292,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             }
 
         });
-
 
         facebookLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,5 +328,14 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.sign_in_button:
+                signIn();
+                break;
+           }
     }
 }
