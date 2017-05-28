@@ -41,8 +41,8 @@
                 <EditText android:id="@+id/nameCompanyEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="18dp"
                     android:hint="COMPANY NAME"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -58,8 +58,8 @@
                 <EditText android:id="@+id/contactPersonEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="18dp"
                     android:hint="CONTACT PERSON" />
             </android.support.design.widget.TextInputLayout>
 
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="EMAIL ID" />
             </android.support.design.widget.TextInputLayout>
 
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="PHONE"
-                    android:textSize="13dp"/>
+                    android:textSize="18dp"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -108,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="PASSWORD" />
             </android.support.design.widget.TextInputLayout>
 
@@ -138,8 +138,8 @@
                 <EditText android:id="@+id/current_requirementEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="18dp"
                     android:hint="CURRENT REQUIREMENT"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="EXPERIENCE"
-                    android:textSize="13dp"/>
+                    android:textSize="18dp"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -172,8 +172,8 @@
                 <EditText android:id="@+id/skillEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="18dp"
                     android:hint="SKILLS" />
             </android.support.design.widget.TextInputLayout>
 
@@ -188,8 +188,8 @@
                 <EditText android:id="@+id/job_roleEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="18dp"
                     android:hint="JOB ROLE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -204,8 +204,8 @@
                 <EditText android:id="@+id/locationEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="18dp"
                     android:hint="LOCATION" />
             </android.support.design.widget.TextInputLayout>
 
@@ -221,7 +221,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="ADDRESS" />
             </android.support.design.widget.TextInputLayout>
 
@@ -231,6 +231,7 @@
                     android:orientation="horizontal"
                     android:padding="5dp">
                     <CheckBox
+                        android:buttonTint="@color/colorAccent"
                         android:id="@+id/termsCondiationCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -257,6 +258,7 @@
                     android:layout_height="40dp">
 
                     <TextView
+                        android:textStyle="bold"
                         android:text="SUBMIT &amp; CONTINUE!"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

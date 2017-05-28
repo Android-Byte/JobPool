@@ -2,11 +2,13 @@ package adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.example.dell.job.ProfileActivity;
 import com.example.dell.job.R;
 
 /**
@@ -17,9 +19,11 @@ public class SearchAdapter extends BaseAdapter {
 
     LayoutInflater layoutInflater;
     Context context;
+    Activity activity;
 
-    public SearchAdapter(Context context){
+    public SearchAdapter(Context context, Activity activity){
         this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -59,6 +63,15 @@ public class SearchAdapter extends BaseAdapter {
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                activity.startActivity(intent);
+            }
+        });
 
         return convertView;
     }

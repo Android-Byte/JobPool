@@ -5,25 +5,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
-        android:id="@+id/topview"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="45sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:text="CANDIDATE  RAGISTRATION"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="NAME"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -65,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="USER ID" />
             </android.support.design.widget.TextInputLayout>
 
@@ -81,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="EMAIL ID" />
             </android.support.design.widget.TextInputLayout>
 
@@ -97,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="PASSWORD" />
             </android.support.design.widget.TextInputLayout>
 
@@ -115,7 +96,7 @@
                     android:inputType="number"
                     android:hint="PHONE"
                     android:maxLength="10"
-                    android:textSize="13dp"/>
+                    android:textSize="18dp"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -135,6 +116,7 @@
                 android:orientation="horizontal"
                 android:padding="5dp">
                 <CheckBox
+                    android:buttonTint="@color/colorAccent"
                     android:id="@+id/checkbox_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -148,6 +130,8 @@
                     android:layout_height="match_parent" />
 
                 <CheckBox
+                    android:buttonTint="@color/colorAccent"
+
                     android:id="@+id/checkbox_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -187,4 +171,25 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/topview"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="45sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="CANDIDATE  RAGISTRATION"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 </RelativeLayout>

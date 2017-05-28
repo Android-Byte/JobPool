@@ -51,18 +51,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textColorHint="#ffffff"
+
                 android:layout_marginBottom="8dp"
                 >
                 <EditText android:id="@+id/input_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="USER NAME" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:textColorHint="#ffffff"
+                android:paddingBottom="5sp"
                 android:layout_height="wrap_content"
                 >
 
@@ -72,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:textSize="13dp"
+                    android:textSize="18dp"
                     android:hint="PASSWORD"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -86,6 +90,7 @@
                 >
 
                 <CheckBox
+                    android:buttonTint="@color/colorAccent"
                     android:text="Remember Me"
                     android:id="@+id/rememberCheck"
                     android:layout_width="wrap_content"

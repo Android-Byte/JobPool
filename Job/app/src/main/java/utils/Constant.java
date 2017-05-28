@@ -53,6 +53,7 @@ public class Constant {
 	public static String ADDRESS="";
 
 	public static String OLDPASSWORD="";
+	public static String PAYMENTAMOUNT="";
 
 	public static String EMAIL_PETTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9][.com])?)*$";
 	/*^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$*/

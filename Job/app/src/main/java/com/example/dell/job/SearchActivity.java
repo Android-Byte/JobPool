@@ -3,6 +3,7 @@ package com.example.dell.job;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,7 +31,7 @@ public class SearchActivity extends SlidingFragmentActivity {
     LinearLayout searchLayout, slidMenuLayout ;
     SearchAdapter adapter;
     SlidingMenu sm;
-    RelativeLayout filterLayout;
+    RelativeLayout filterLayout, parentLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,8 +59,9 @@ public class SearchActivity extends SlidingFragmentActivity {
         searchListView = (ListView) findViewById(R.id.searchListView);
 
         filterLayout = (RelativeLayout)findViewById(R.id.filterLayout);
+        parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
 
-        adapter = new SearchAdapter(SearchActivity.this);
+        adapter = new SearchAdapter(SearchActivity.this,SearchActivity.this);
         searchListView.setAdapter(adapter);
     }
 
@@ -93,7 +95,7 @@ public class SearchActivity extends SlidingFragmentActivity {
         filterLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchActivity.this,AllListActivity.class);
+                Intent intent = new Intent(SearchActivity.this,FilterActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.stay);
             }
@@ -109,10 +111,28 @@ public class SearchActivity extends SlidingFragmentActivity {
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(skillesediTxt.getText().length()!=0){
+                    if(locationEdit.getText().length()!=0){
+                            Intent  intent = new Intent(SearchActivity.this, AllListActivity.class);
+                            startActivity(intent);
+                    }else {
+                        Snackbar.make(parentLayout,"Please enter location.!",Snackbar.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Snackbar.make(parentLayout,"Please enter skilles",Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
+    }
 
-
+    public void closeToggle(){
+        sm = getSlidingMenu();
+        sm.setShadowWidthRes(R.dimen.shadow_width);
+        sm.setShadowDrawable(R.drawable.shadow);
+        sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        sm.setFadeDegree(0.35f);
+        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        sm.setSlidingEnabled(false);
+        sm.toggle();
     }
 }

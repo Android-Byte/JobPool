@@ -10,6 +10,7 @@
     <string name="about_us_txt">About Us</string>
     <string name="change_password_txt">Change Password</string>
     <string name="privacy_policy_txt">Privacy Policy</string>
+    <string name="payment_txt">Payment</string>
     <string name="terms_conditions_txt">Terms &amp; Conditions</string>
     <string name="logout_txt">Logout</string>
 

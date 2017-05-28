@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/parentLayout"
     android:layout_height="match_parent">
 
 
@@ -10,7 +11,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="98dp"
+        android:layout_marginTop="130dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -62,30 +63,34 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-  >
+
+            >
 
             <EditText
+                android:drawableRight="@drawable/description"
                 android:id="@+id/input_skills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Skills,Job,Role"
-                android:textSize="13dp"
-                android:inputType="text"
+                android:textSize="18dp"
+                android:inputType="textCapWords"
                 />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             >
+
             <EditText
+                android:drawableRight="@drawable/location"
                 android:id="@+id/input_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="City"
-                android:textSize="13dp"
-                android:inputType="text" />
+                android:inputType="textCapWords"
+                android:textSize="18dp"
+                 />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -102,7 +107,7 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FIND CANDIDATE"/>
+                android:text="FIND CANDIDATES"/>
 
         </LinearLayout>
 

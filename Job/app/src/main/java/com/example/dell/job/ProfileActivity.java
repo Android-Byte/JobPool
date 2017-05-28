@@ -63,21 +63,22 @@ public class ProfileActivity extends SlidingFragmentActivity {
         downloadTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Coming soon!",Toast.LENGTH_LONG).show();
+                downloadTxtView.setBackgroundResource(R.color.yellow);
+                contactTxtView.setBackgroundResource(R.color.colorAccent);
             }
         });
 
         contactTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Coming soon!",Toast.LENGTH_LONG).show();
+                downloadTxtView.setBackgroundResource(R.color.colorAccent);
+                contactTxtView.setBackgroundResource(R.color.yellow);
             }
         });
     }
 
     private void setBehindView() {
         setBehindContentView(R.layout.menu_slide);
-        //transaction fragment to sliding menu
         transactionFragments(MenuFragment.newInstance(), R.id.menu_slide);
     }
 

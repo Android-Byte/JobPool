@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="10sp"
-    android:background="@color/colorAccent"
+    android:background="@drawable/fillbaoundry"
     android:orientation="vertical"
     >
 
@@ -16,7 +16,7 @@
         android:text="PLEASE SELECT"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textStyle="bold" />
 
 
@@ -28,9 +28,11 @@
         ></View>
 
     <LinearLayout
+
+        android:layout_marginBottom="30sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:orientation="horizontal"
         >

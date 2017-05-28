@@ -81,7 +81,7 @@ public class AllListActivity extends SlidingFragmentActivity {
 
         slidMenuLayout = (LinearLayout)findViewById(R.id.slidMenuLayout);
         searchListView = (ListView)findViewById(R.id.searchListView);
-        adapter = new SearchAdapter(AllListActivity.this);
+        adapter = new SearchAdapter(AllListActivity.this,AllListActivity.this);
         searchListView.setAdapter(adapter);
 
     }

@@ -52,13 +52,6 @@ public class LoginActivity extends AppCompatActivity implements RequestReceiver{
         input_username = (EditText)findViewById(R.id.input_username);
         input_password = (EditText)findViewById(R.id.input_password);
 
-        if(sharedPreferences.getString("status","").equals("1")){
-            Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-
-        }
-
     }
 
     public  void clickListener(){

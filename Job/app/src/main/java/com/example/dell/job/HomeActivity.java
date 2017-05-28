@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -18,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -42,8 +45,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,12 +63,16 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 100;
+    EditText input_skills, input_city;
+
 
     /*Facebook*/
     CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     LoginButton login_button;
+    SharedPreferences sharedPreferences;
 
+    RelativeLayout parentLayout;
     LinearLayout facebookLayout, googleLayout, registerLayout, loginLayout, findContactLayout;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -94,9 +103,18 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
 
     public  void init(){
 
+        sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
 
+        if(sharedPreferences.getString("status","").equals("1")){
+            Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        }
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
+                .requestIdToken("40869790781-r60j5kq6qq2uduur4ct2clpq4890jd6j.apps.googleusercontent.com")
                 .build();
 
 
@@ -122,7 +140,10 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         registerLayout = (LinearLayout)findViewById(R.id.registerLayout);
         loginLayout = (LinearLayout)findViewById(R.id.loginLayout);
         findContactLayout = (LinearLayout)findViewById(R.id.findContactLayout);
+        parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
 
+        input_skills = (EditText)findViewById(R.id. input_skills);
+        input_city = (EditText)findViewById(R.id. input_city);
 
     }
 
@@ -261,9 +282,17 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         findContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-                startActivity(intent);*/
-
+                if(input_skills.getText().length()!=0){
+                    if(input_city.getText().length()!=0){
+                        /*Intent  intent = new Intent(HomeActivity.this, AllListActivity.class);
+                        startActivity(intent);*/
+                        Snackbar.make(parentLayout,"Cominng Soon.!",Snackbar.LENGTH_SHORT).show();
+                    }else {
+                        Snackbar.make(parentLayout,"Please enter city.!",Snackbar.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Snackbar.make(parentLayout,"Please enter skills.!",Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -16,13 +16,16 @@
         android:paddingTop="10dp"
         android:background="@color/colorAccent">
     </TextView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="80dp"
         android:layout_gravity="center">
+
         <LinearLayout
+            android:id="@+id/TenCondidatelayout"
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -58,6 +61,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/TwentyCondidatelayout"
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -93,6 +97,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ThertyCondidatelayout"
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -128,7 +133,6 @@
 
         </LinearLayout>
     </LinearLayout>
-
 
 
 </LinearLayout>
