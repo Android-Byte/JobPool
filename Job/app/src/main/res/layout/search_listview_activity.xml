@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:id="@+id/topView"
-        android:background="@drawable/fillbaoundry"
+        android:background="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="45sp"
         android:layout_alignParentTop="true"
@@ -26,6 +26,16 @@
                 android:src="@drawable/menu"
                 android:id="@+id/imageView2" />
         </LinearLayout>
+
+        <utils.TextviewSemiBold
+            android:text="JobPool"
+            android:textColor="#000000"
+            android:textSize="@dimen/header_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView18" />
     </RelativeLayout>
 
     <RelativeLayout

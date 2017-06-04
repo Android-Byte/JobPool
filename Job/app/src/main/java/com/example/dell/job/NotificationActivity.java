@@ -1,5 +1,6 @@
 package com.example.dell.job;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,8 +50,12 @@ public class NotificationActivity extends SlidingFragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.stay, R.anim.slide_down);
+
+            super.onBackPressed();
+            Intent intent = new Intent(NotificationActivity.this, SearchActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
     }
 
     private void setBehindView() {

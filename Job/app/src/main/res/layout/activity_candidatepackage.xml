@@ -5,24 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CandidatepackageActivity">
-    <TextView
+    <utils.TextviewSemiBold
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:text="SELECT  PACKAGES"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="18dp"
-        android:paddingTop="10dp"
+        android:textSize="@dimen/header_font"
+
         android:background="@color/colorAccent">
-    </TextView>
+    </utils.TextviewSemiBold>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="50dp"
         android:layout_gravity="center">
+
         <LinearLayout
+            android:id="@+id/threeMonthPackage"
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -57,7 +60,9 @@
                 android:textStyle="italic" />
 
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/sixMonthPackage"
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -93,6 +98,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/oneYearPackage"
             android:layout_width="300dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -131,6 +137,8 @@
 
 
     <TextView
+        android:visibility="gone"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:id="@+id/skip"
@@ -139,8 +147,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="18dp"
-        android:paddingTop="10dp"
+
         android:background="@color/colorAccent">
     </TextView>
 </LinearLayout>

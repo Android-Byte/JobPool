@@ -1,12 +1,16 @@
 package com.example.dell.job;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +47,14 @@ public class ProfileActivity extends SlidingFragmentActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ProfileActivity.this, SearchActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
     public void init(){
 
         slidMenuLayout = (LinearLayout)findViewById(R.id.slidMenuLayout);
@@ -73,6 +85,38 @@ public class ProfileActivity extends SlidingFragmentActivity {
             public void onClick(View view) {
                 downloadTxtView.setBackgroundResource(R.color.colorAccent);
                 contactTxtView.setBackgroundResource(R.color.yellow);
+                final Dialog dialog = new Dialog(ProfileActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.share_dialog);
+                TextView mailTxt = (TextView)dialog.findViewById(R.id.mailTxt);
+                TextView messageTxt = (TextView)dialog.findViewById(R.id.messageTxt);
+
+                mailTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                "mailto","", null));
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ConTact");
+                        emailIntent.putExtra(Intent.EXTRA_TEXT,  "");
+                        startActivity(Intent.createChooser(emailIntent, "Send Email..."));
+                        dialog.dismiss();
+                    }
+                });
+
+                messageTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String smsBody= "";
+                        Uri uri = Uri.parse("smsto:0800000123");
+                        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                        sendIntent.putExtra("sms_body", smsBody);
+                        sendIntent.setType("vnd.android-dir/mms-sms");
+                         startActivity(sendIntent);
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
     }

@@ -12,8 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <TextView
-            android:textSize="18sp"
+        <utils.TextviewSemiBold
+            android:textSize="@dimen/header_font"
             android:textStyle="bold"
             android:textColor="#000000"
             android:text="EMPLOYEE REGISTRATION"
@@ -268,7 +268,8 @@
                         android:layout_width="200dp"
                         android:layout_height="40dp">
 
-                        <TextView
+                        <utils.TextviewSemiBold
+                            android:textSize="@dimen/header_font"
                             android:text="SUBMIT NOW!"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

@@ -8,18 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
+        <utils.TextviewSemiBold
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:text="COMPLETE PROFILE"
             android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp"
-            android:paddingTop="10dp"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/header_font"
             android:layout_gravity="center"
             android:background="@color/colorAccent">
-        </TextView>
+        </utils.TextviewSemiBold>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,8 +40,8 @@
                 <EditText android:id="@+id/_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="@dimen/medium_font"
                     android:hint="LOCATION"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -58,8 +57,8 @@
                 <EditText android:id="@+id/_experience"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="@dimen/medium_font"
                     android:hint="EXPERIENCE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -74,8 +73,8 @@
                 <EditText android:id="@+id/_skill_and_certification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="13dp"
+                    android:inputType="textCapWords"
+                    android:textSize="@dimen/medium_font"
                     android:hint="SKILL AND CERTIFICATION" />
             </android.support.design.widget.TextInputLayout>
 
@@ -91,9 +90,9 @@
                 <EditText android:id="@+id/_strengths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:hint="STRENGTHS"
-                    android:textSize="13dp"/>
+                    android:textSize="@dimen/medium_font"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -108,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:textSize="13dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="EXPECTED SALARY" />
             </android.support.design.widget.TextInputLayout>
 
@@ -124,7 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
-                    android:textSize="13dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="COMPLETE ADDRESS"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -164,7 +163,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:textSize="13dp"
+                    android:textSize="@dimen/medium_font"
+
                     android:hint="OBJECTIVE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -180,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:textSize="13dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="BRIEF DESCRIPTION" />
             </android.support.design.widget.TextInputLayout>
 
@@ -198,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TERMS AND CONDITIONS"
-                        android:textSize="12dp"/>
+                        android:textSize="@dimen/medium_font"/>
                 </LinearLayout>
 
 
@@ -215,7 +215,9 @@
                     android:layout_width="200dp"
                     android:layout_height="40dp">
 
-                    <TextView
+                    <utils.TextviewSemiBold
+                        android:textStyle="bold"
+                        android:textSize="@dimen/large_font"
                         android:text="SUBMIT NOW!"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

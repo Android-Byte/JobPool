@@ -169,7 +169,7 @@ public class PaymentsActivity extends FragmentActivity {
          * By the time CB detects good network, if CBWebview is destroyed, we resume the transaction by passing payment post data to,
          * this, merchant checkout activity.
          * */
-        customBrowserConfig.setMerchantCheckoutActivityPath("com.example.payu.webportalsampleapp.MerchantCheckoutActivity");
+        customBrowserConfig.setMerchantCheckoutActivityPath("com.example.dell.job.MerchantCheckoutActivity");
 
          customBrowserConfig.setPostURL(url);
          customBrowserConfig.setPayuPostData(postData);

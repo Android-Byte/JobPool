@@ -23,6 +23,13 @@ public class Constant {
 	public static final int LOGOUT = 4;
 	public static final int FORGOTPASSWORD = 5;
 	public static final int CHANGEPASSWORD = 6;
+	public static final int SOCIALLOGIN = 7;
+	public static final int GET_COMPANY_PROFILE = 8;
+	public static final int GET_CANDIDATE_PROFILE = 9;
+	public static final int UPDATE_CANDIDATE_PROFILE = 10;
+	public static final int UPDATE_EMPLOYER_PROFILE = 11;
+	public static final int UPDATE_EMPLOYER_PIC = 12;
+	public static final int UPDATE_CADIDATE_PIC = 13;
 
 	public static String BASE_URL ="http://smtgroup.in/jobpools/wdiapi/index.php/";
 
@@ -32,15 +39,26 @@ public class Constant {
 	public static String LOGOUT_URL = BASE_URL+"candidate_logout";
 	public static String FORGOT_URL = BASE_URL+"candidate_forgot_password";
 	public static String CHANGE_PASSWORD_URL = BASE_URL+"candidate_changed_password";
-
+	public static String SOCIAL_LOGIN_URL = BASE_URL+"candidate_fblogin";
+	public static String GET_PROFILE_URL = BASE_URL+"get_profile";
+	public static String UPDATE_CANDIDATE_PROFILE_URL = BASE_URL+"candidate_update";
+	public static String UPDATE_EMPLOYER_PROFILE_URL = BASE_URL+"employer_update";
+	public static String UPDATE_EMPLOYER_PIC_URL = BASE_URL+"employer_update";
+	public static String UPDATE_CANDIDATE_PIC_URL = BASE_URL+"employer_update";
 
 	public static String NAME="";
 	public static String USER_NAME="";
 	public static String EMAIL="";
 	public static String PASSWORD="";
+	public static String CONFIRM_PASSWORD="";
 	public static String PHONE_NUMBER="";
 	public static String GENDER="";
 	public static String USER_ID="";
+	public static String USER_IMAGE="";
+
+	/*SOCIAL LOGIN*/
+	public static String FB_ID="";
+	public static String GOOGLE_ID="";
 
 	/*EMPLOYER REGISTER*/
 	public static String COMPANY_NAME="";
@@ -50,10 +68,17 @@ public class Constant {
 	public static String SKILLES="";
 	public static String JOBROLL="";
 	public static String LOCATION="";
+	public static String USER_TYPE="";
 	public static String ADDRESS="";
 
 	public static String OLDPASSWORD="";
 	public static String PAYMENTAMOUNT="";
+
+	public static String STRENGHT="";
+	public static String EXP_SALARY="";
+	public static String OBJECTIVE="";
+	public static String BRIEFDESCRIPTION="";
+
 
 	public static String EMAIL_PETTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9][.com])?)*$";
 	/*^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$*/

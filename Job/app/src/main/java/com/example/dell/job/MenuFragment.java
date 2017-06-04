@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
 import utils.Constant;
 import utils.RequestReceiver;
 import utils.WebserviceHelper;
@@ -32,7 +34,7 @@ public class MenuFragment extends Fragment implements RequestReceiver{
     private View rootView;
     LinearLayout profileLayout, searchLayout, notificationLayout, aboutusLayout,
             change_passwordLayout, privacyPolicyLayout, termsLayout, logoutLayout, paymentLayout;
-    TextView userNameTxt;
+    TextView userNameTxt, searchCandidate;
     RequestReceiver receiver;
     SharedPreferences sharedPreferences;
     SearchActivity searchActivity;
@@ -45,8 +47,6 @@ public class MenuFragment extends Fragment implements RequestReceiver{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -64,9 +64,18 @@ public class MenuFragment extends Fragment implements RequestReceiver{
         termsLayout = (LinearLayout)rootView.findViewById(R.id.termsLayout);
         logoutLayout = (LinearLayout)rootView.findViewById(R.id.logoutLayout);
         userNameTxt = (TextView)rootView.findViewById(R.id.userNameTxt);
+        searchCandidate = (TextView)rootView.findViewById(R.id.searchCandidate);
 
         searchActivity = new SearchActivity();
-        userNameTxt.setText(sharedPreferences.getString("user_name",""));
+        Constant.EMAIL = sharedPreferences.getString("email","");
+
+        if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
+            searchCandidate.setText("Search Company");
+            userNameTxt.setText(sharedPreferences.getString("user_name",""));
+        }else {
+            searchCandidate.setText("Search Candidates");
+            userNameTxt.setText(sharedPreferences.getString("company_name",""));
+        }
 
         return rootView;
     }
@@ -89,45 +98,72 @@ public class MenuFragment extends Fragment implements RequestReceiver{
         employer.execute();
     }
 
+    public void changecallSerivice() {
+        WebserviceHelper employer = new WebserviceHelper(receiver, getActivity());
+        employer.setAction(Constant.CHANGEPASSWORD);
+        employer.execute();
+    }
+
     private void clicklistener(){
 
         paymentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),SelectPackageActivity.class);
-                startActivity(intent);
+
+
+                if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
+                    Intent intent = new Intent(getActivity(),CandidatepackageActivity.class);
+                    startActivity(intent);
+
+                }else {
+                    Intent intent = new Intent(getActivity(),SelectPackageActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
+                if(!getActivity().getClass().getSimpleName().equals("SearchActivity")){
+                    Intent intent = new Intent(getActivity(),SearchActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
             }
         });
 
         termsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),TermsCondtionActivity.class);
-                startActivity(intent);
+                if(!getActivity().getClass().getSimpleName().equals("TermsCondtionActivity")){
+                    Intent intent = new Intent(getActivity(),TermsCondtionActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
         privacyPolicyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),PrivacyPolicyActivity.class);
-                startActivity(intent);
+                if(!getActivity().getClass().getSimpleName().equals("PrivacyPolicyActivity")){
+                    Intent intent = new Intent(getActivity(),PrivacyPolicyActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
         aboutusLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),AboutUsActivity.class);
-                startActivity(intent);
+                if(!getActivity().getClass().getSimpleName().equals("AboutUsActivity")){
+                    Intent intent = new Intent(getActivity(),AboutUsActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -138,10 +174,29 @@ public class MenuFragment extends Fragment implements RequestReceiver{
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.change_password);
                 LinearLayout submitLayout = (LinearLayout)dialog.findViewById(R.id.submitLayout);
+                final EditText old_passwordEdit = (EditText)dialog.findViewById(R.id.old_passwordEdit);
+                final EditText new_passwordEdit = (EditText)dialog.findViewById(R.id.new_passwordEdit);
+                final EditText confirm_passwordEdit = (EditText)dialog.findViewById(R.id.confirm_passwordEdit);
 
                 submitLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if(old_passwordEdit.getText().length()!=0){
+                            if(new_passwordEdit.getText().length()!=0){
+                                if(new_passwordEdit.getText().toString().equals(confirm_passwordEdit.getText().toString())) {
+                                    Constant.OLDPASSWORD = old_passwordEdit.getText().toString();
+                                    Constant.PASSWORD = new_passwordEdit.getText().toString();
+                                    changecallSerivice();
+                                    dialog.dismiss();
+                                }else {
+                                    Toast.makeText(getActivity(),"Check confirm password.!",Toast.LENGTH_SHORT).show();
+                                }
+                            }else {
+                                Toast.makeText(getActivity(),"Enter new password.!",Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(),"Enter old password.!",Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });
@@ -153,16 +208,24 @@ public class MenuFragment extends Fragment implements RequestReceiver{
         profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
-                startActivity(intent);
+                if(!getActivity().getClass().getSimpleName().equals("EditProfileActivity")){
+                    Intent intent = new Intent(getActivity(),EditProfileActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+
             }
         });
 
         notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),NotificationActivity.class);
-                startActivity(intent);
+                if(!getActivity().getClass().getSimpleName().equals("NotificationActivity")){
+                    Intent intent = new Intent(getActivity(),NotificationActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+
             }
         });
 
@@ -182,10 +245,30 @@ public class MenuFragment extends Fragment implements RequestReceiver{
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.commit();
+            try {
+                LoginManager.getInstance().logOut();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-//            Toast.makeText(getActivity(),""+result[1], Toast.LENGTH_SHORT).show();
+//          Toast.makeText(getActivity(),""+result[1], Toast.LENGTH_SHORT).show();
+        }else if(result[0].equals("101")){
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.alertpopup);
+            TextView massageTxtView = (TextView) dialog.findViewById(R.id.massageTxtView);
+            massageTxtView.setText(result[1]);
+            LinearLayout submitLayout = (LinearLayout)dialog.findViewById(R.id.submitLayout);
+            submitLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         }
     }
 }

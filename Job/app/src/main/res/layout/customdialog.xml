@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="10sp"
     android:background="@drawable/fillbaoundry"
     android:orientation="vertical"
     >
 
-    <TextView
+    <utils.TextviewSemiBold
+        android:layout_marginTop="10sp"
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="PLEASE SELECT"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="18dp"
+        android:textSize="@dimen/header_font"
         android:textStyle="bold" />
 
 
@@ -24,9 +24,11 @@
         android:layout_marginTop="10sp"
         android:layout_width="match_parent"
         android:layout_height="0.5sp"
-        android:background="#ffffff"
-        ></View>
-
+        android:background="#Fae731"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5sp"
+        android:background="#Baa307"/>
     <LinearLayout
 
         android:layout_marginBottom="30sp"

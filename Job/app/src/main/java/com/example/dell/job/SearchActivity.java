@@ -3,6 +3,7 @@ package com.example.dell.job;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +33,7 @@ public class SearchActivity extends SlidingFragmentActivity {
     SearchAdapter adapter;
     SlidingMenu sm;
     RelativeLayout filterLayout, parentLayout;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,24 @@ public class SearchActivity extends SlidingFragmentActivity {
         searchListView.setAdapter(adapter);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+//        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        Snackbar.make(parentLayout,"Please click BACK again to exit.!",Snackbar.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
     private void setBehindView() {
         setBehindContentView(R.layout.menu_slide);

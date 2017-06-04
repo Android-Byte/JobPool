@@ -7,18 +7,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
+
+        <utils.TextviewSemiBold
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:text="CANDIDATE REGISTRATION"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp"
-            android:paddingTop="10dp"
-            android:layout_gravity="center"
+            android:textSize="@dimen/header_font"
+            android:gravity="center"
             android:background="@color/colorAccent">
-        </TextView>
+        </utils.TextviewSemiBold>
 
         <LinearLayout
             android:layout_width="match_parent"

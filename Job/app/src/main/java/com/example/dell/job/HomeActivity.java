@@ -9,8 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -20,7 +20,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -45,10 +44,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,23 +53,25 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HomeActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+import utils.Constant;
+import utils.MarshMallowPermission;
+import utils.RequestReceiver;
+import utils.WebserviceHelper;
+
+public class HomeActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, RequestReceiver {
     //Signing Options
     private SignInButton signInButton;
-
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 100;
-    EditText input_skills, input_city;
-
-
+    RequestReceiver receiver;
+    MarshMallowPermission marshMallowPermission;
     /*Facebook*/
     CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     LoginButton login_button;
     SharedPreferences sharedPreferences;
 
-    RelativeLayout parentLayout;
     LinearLayout facebookLayout, googleLayout, registerLayout, loginLayout, findContactLayout;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -99,10 +98,12 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
 
         init();
         clickListener();
+
     }
 
     public  void init(){
 
+        receiver = this;
         sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
 
         if(sharedPreferences.getString("status","").equals("1")){
@@ -112,11 +113,8 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
 
         }
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
-                .requestIdToken("40869790781-r60j5kq6qq2uduur4ct2clpq4890jd6j.apps.googleusercontent.com")
                 .build();
-
 
         //Initializing google api client
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -128,7 +126,6 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         login_button = (LoginButton) findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
         login_button.setReadPermissions("email");
-
         //Initializing signinbutton
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -140,10 +137,16 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         registerLayout = (LinearLayout)findViewById(R.id.registerLayout);
         loginLayout = (LinearLayout)findViewById(R.id.loginLayout);
         findContactLayout = (LinearLayout)findViewById(R.id.findContactLayout);
-        parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
+        marshMallowPermission = new MarshMallowPermission(HomeActivity.this);
 
-        input_skills = (EditText)findViewById(R.id. input_skills);
-        input_city = (EditText)findViewById(R.id. input_city);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                marshMallowPermission.requestPermissionForExternalStorage();
+                if (!marshMallowPermission.checkPermissionForLocation()) {
+                    marshMallowPermission.requestPermissionForLocation();
+                }
+            }
+        }
 
     }
 
@@ -167,37 +170,27 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         }
     }
 
-    /*//After the signing we are calling this function
-    private void handleSignInResult(GoogleSignInResult result) {
-        //If the login succeed
-        if (result.isSuccess()) {
-            //Getting google account
-            GoogleSignInAccount acct = result.getSignInAccount();
 
-
-            Toast.makeText(this, "Login "+acct.getDisplayName(), Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Login "+acct.getEmail(), Toast.LENGTH_LONG).show();
-        } else {
-            //If login fails
-            Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
-        }
-    }*/
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d("TAG", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this, "Login "+acct.getDisplayName(), Toast.LENGTH_LONG).show();
-
+            Constant.GOOGLE_ID = acct.getId();
+            Constant.EMAIL = acct.getEmail();
+            Constant.USER_NAME = acct.getDisplayName();
+            try {
+                Constant.USER_IMAGE = acct.getPhotoUrl().toString();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         } else {
-            // Signed out, show unauthenticated UI.
             Toast.makeText(this, "Login faild ", Toast.LENGTH_LONG).show();
         }
     }
 
      private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+             startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
 
@@ -208,10 +201,14 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+            Constant.PASSWORD ="";
+            logincallSerivice();
+            Constant.FB_ID = "";
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
             Log.e("onActivityResult", "data" + requestCode);
             RequestData();
+
         }
     }
 
@@ -224,9 +221,18 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
                 System.out.println("Json data :" + json);
                 try {
                     if (json != null) {
+
                         Log.e("","Email : "+json.getString("email"));
-                        String text = "<b>Name :</b> " + json.getString("name") + "<br><br><b>Email :</b> " + json.getString("email") + "<br><br><b>Profile link :</b> ";
-                        Toast.makeText(getApplicationContext(),"User Name :"+ json.getString("name")+"\nEmail :"+json.getString("email") ,Toast.LENGTH_LONG).show();
+                        try {
+                            Constant.EMAIL = json.getString("email");
+                        }catch (Exception e){
+                             Constant.EMAIL = json.getString("name")+"@gmail.com";
+                        }
+//                        String text = "<b>Name :</b> " + json.getString("name") + "<br><br><b>Email :</b> " + json.getString("email") + "<br><br><b>Profile link :</b> ";
+//                        Toast.makeText(getApplicationContext(),"User Name :"+ json.getString("name")+"\nEmail :"+json.getString("email") ,Toast.LENGTH_LONG).show();
+                        Constant.PASSWORD ="";
+                        logincallSerivice();
+                        Constant.GOOGLE_ID = "";
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -282,17 +288,9 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         findContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(input_skills.getText().length()!=0){
-                    if(input_city.getText().length()!=0){
-                        /*Intent  intent = new Intent(HomeActivity.this, AllListActivity.class);
-                        startActivity(intent);*/
-                        Snackbar.make(parentLayout,"Cominng Soon.!",Snackbar.LENGTH_SHORT).show();
-                    }else {
-                        Snackbar.make(parentLayout,"Please enter city.!",Snackbar.LENGTH_SHORT).show();
-                    }
-                }else {
-                    Snackbar.make(parentLayout,"Please enter skills.!",Snackbar.LENGTH_SHORT).show();
-                }
+             /*   Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                startActivity(intent);*/
+
             }
         });
 
@@ -302,12 +300,19 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
                 Log.e("registercallback", "onSuccess" + loginResult);
                 Log.e("loginResult", "else" + loginResult);
 
-
                 if (AccessToken.getCurrentAccessToken() != null) {
                     Log.e("AccessToken", "onSuccessif" + loginResult);
                     Profile profile = Profile.getCurrentProfile();
                     if (profile != null) {
                         /*get all profile data*/
+                        Constant.FB_ID = profile.getId();
+                        Constant.USER_NAME = profile.getFirstName()+" "+profile.getLastName();
+                        try {
+                            Constant.USER_IMAGE = profile.getProfilePictureUri(200,200).toString();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }
                 }
             }
@@ -359,6 +364,18 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
 
     }
 
+/*    public void socialcallSerivice() {
+        WebserviceHelper employer = new WebserviceHelper(receiver, HomeActivity.this);
+        employer.setAction(Constant.SOCIALLOGIN);
+        employer.execute();
+    }*/
+
+    public void logincallSerivice() {
+        WebserviceHelper employer = new WebserviceHelper(receiver, HomeActivity.this);
+        employer.setAction(Constant.LOGIN);
+        employer.execute();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -366,5 +383,27 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
                 signIn();
                 break;
            }
+    }
+
+    @Override
+    public void requestFinished(String[] result) throws Exception {
+        if(result[0].equals("1")){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("status", "1");
+            editor.putString("user_id", "" + Constant.USER_ID);
+            editor.putString("email", "" + Constant.EMAIL);
+            editor.putString("user_name", "" + Constant.USER_NAME);
+            editor.putString("phone", "" + Constant.PHONE_NUMBER);
+            editor.putString("location", "" + Constant.LOCATION);
+            editor.putString("image", "" + Constant.USER_IMAGE);
+            editor.putString("user_type", "" + "candidate");
+            Log.e("",""+Constant.EMAIL+"  "+Constant.USER_IMAGE);
+            editor.commit();
+
+            Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        }
     }
 }

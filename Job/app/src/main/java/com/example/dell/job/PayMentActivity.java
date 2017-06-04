@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -79,6 +80,7 @@ public class PayMentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         amount = Constant.PAYMENTAMOUNT;
 //      spinner.setVisibility(View.VISIBLE);
@@ -90,7 +92,7 @@ public class PayMentActivity extends AppCompatActivity {
         super.onResume();
         transaction_Id = "" + System.currentTimeMillis();
         ((EditText) findViewById(R.id.tran_id)).setText(transaction_Id);
-        ((EditText) findViewById(R.id.amount)).setText(10 + "");
+        ((EditText) findViewById(R.id.amount)).setText(Constant.PAYMENTAMOUNT + "");
     }
 
 

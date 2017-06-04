@@ -1,30 +1,67 @@
 package com.example.dell.job;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import utils.Constant;
+import utils.Global;
+import utils.MarshMallowPermission;
+import utils.RequestReceiver;
+import utils.WebserviceHelper;
+
 /**
- * Created by chauhan on 5/28/2017.
+ * Created by Suraj Shakya on 5/28/2017.
  */
 
-public class EditProfileActivity extends SlidingFragmentActivity {
+public class EditProfileActivity extends SlidingFragmentActivity implements RequestReceiver{
 
+    RequestReceiver receiver;
     SlidingMenu sm;
     LinearLayout slidMenuLayout;
     RelativeLayout parentLayout;
     TextView editProfileTxtView;
+
+    ImageView UserProfileImage;
+    TextView nameTxt,cityTxt, skillesTxt, experiencetTxt, addressTxt, emailTxt, contactTxt, aboutUsTxt;
+
+    LinearLayout bottomLayout, expLayout, skillesLayout;
+    SharedPreferences sharedPreferences;
+    MarshMallowPermission marshMallowPermission;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,17 +83,197 @@ public class EditProfileActivity extends SlidingFragmentActivity {
     }
 
     public void init(){
+        receiver = this;
+        marshMallowPermission = new MarshMallowPermission(EditProfileActivity.this);
+        sharedPreferences = getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
         slidMenuLayout = (LinearLayout)findViewById(R.id.slidMenuLayout);
         editProfileTxtView = (TextView)findViewById(R.id.editProfileTxtView);
         parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
+
+        expLayout = (LinearLayout)findViewById(R.id. expLayout);
+        skillesLayout = (LinearLayout)findViewById(R.id. skillesLayout);
+
+        UserProfileImage = (ImageView)findViewById(R.id.UserProfileImage);
+        nameTxt = (TextView)findViewById(R.id.nameTxt);
+        cityTxt = (TextView)findViewById(R.id.cityTxt);
+        skillesTxt = (TextView)findViewById(R.id.skillesTxt);
+        experiencetTxt = (TextView)findViewById(R.id.experiencetTxt);
+        addressTxt = (TextView)findViewById(R.id.addressTxt);
+        emailTxt = (TextView)findViewById(R.id.emailTxt);
+        contactTxt = (TextView)findViewById(R.id.contactTxt);
+        aboutUsTxt = (TextView)findViewById(R.id.aboutUsTxt);
+
+        bottomLayout = (LinearLayout)findViewById(R.id.bottomLayout);
+        Constant.EMAIL = sharedPreferences.getString("email","");
+//            Constant.EMAIL = "agrawal@gmail.com";
+
+        if(sharedPreferences.getString("user_type","").equals("candidate")){
+            getCandidateSerivice();
+        }else {
+            getCompanySerivice();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(sharedPreferences.getString("user_type","").equals("candidate")){
+            try{
+                getCandidateSerivice();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }else {
+            try{
+                getCompanySerivice();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+            super.onBackPressed();
+            Intent intent = new Intent(EditProfileActivity.this, SearchActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+    }
+
+    public void getCandidateSerivice() {
+        WebserviceHelper getprofile = new WebserviceHelper(receiver, EditProfileActivity.this);
+        getprofile.setAction(Constant.GET_CANDIDATE_PROFILE);
+        getprofile.execute();
+    }
+
+    public void getCompanySerivice() {
+        WebserviceHelper getprofile = new WebserviceHelper(receiver, EditProfileActivity.this);
+        getprofile.setAction(Constant.GET_COMPANY_PROFILE);
+        getprofile.execute();
+    }
+
+    public void setcompanyData(){
+
+        try {
+            expLayout.setVisibility(View.GONE);
+            skillesLayout.setVisibility(View.GONE);
+            if(Global.companylist.get(0).getCompany_name()!=null ){
+                nameTxt.setText(Global.companylist.get(0).getCompany_name());
+            }else {
+                nameTxt.setText("");
+            }
+            if(Global.companylist.get(0).getCompany_name()!=null){
+                cityTxt.setText(Global.companylist.get(0).getLocation());
+            }else {
+                cityTxt.setText("");
+            }
+            if(Global.companylist.get(0).getEmail()!=null){
+                emailTxt.setText(Global.companylist.get(0).getEmail());
+            }else {
+                emailTxt.setText("");
+            }
+            if(Global.companylist.get(0).getPhone()!=null){
+                contactTxt.setText("+91 "+Global.companylist.get(0).getPhone());
+            }else {
+                contactTxt.setText("+91 ");
+            }
+            if(Global.companylist.get(0).getAddress()!=null ){
+                addressTxt.setText(Global.companylist.get(0).getAddress());
+            }else {
+                addressTxt.setText("");
+            }
+            aboutUsTxt.setText("");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setcandidateData(){
+
+        try{
+
+//            Toast.makeText(getApplicationContext(),""+Global.candidatelist.get(0).getLocation(),Toast.LENGTH_SHORT).show();
+//
+//            if(Global.candidatelist.get(0).getLocation()==null){
+//                Toast.makeText(getApplicationContext(),"null",Toast.LENGTH_SHORT).show();
+//            }else {
+//                Toast.makeText(getApplicationContext(),"Not Null"+Global.candidatelist.get(0).getLocation(),Toast.LENGTH_SHORT).show();
+//            }
+//
+            if(Global.candidatelist.get(0).getName()!=null){
+                nameTxt.setText(Global.candidatelist.get(0).getName());
+            }else {
+                nameTxt.setText("");
+            }
+            if(Global.candidatelist.get(0).getLocation()!=null){
+                cityTxt.setText(Global.candidatelist.get(0).getLocation());
+            }else {
+                cityTxt.setText("");
+            }
+            if(Global.candidatelist.get(0).getExperience()!=null ){
+                experiencetTxt.setText(Global.candidatelist.get(0).getExperience());
+            }else {
+                experiencetTxt.setText("");
+            }
+            if(Global.candidatelist.get(0).getAddress()!=null){
+                addressTxt.setText(Global.candidatelist.get(0).getAddress());
+            }else {
+                addressTxt.setText("");
+            }
+            if(Global.candidatelist.get(0).getEmail()!=null || Global.candidatelist.get(0).getEmail().isEmpty()){
+                emailTxt.setText(Global.candidatelist.get(0).getEmail());
+            }else {
+                emailTxt.setText("");
+            }
+            if(Global.candidatelist.get(0).getPhone()!=null){
+                contactTxt.setText("+91 "+Global.candidatelist.get(0).getPhone());
+            }else {
+                contactTxt.setText("+91 "+"");
+            }
+            if(Global.candidatelist.get(0).getSkill()!=null){
+                skillesTxt.setText(Global.candidatelist.get(0).getSkill());
+            }else {
+                skillesTxt.setText("");
+            }
+
+            aboutUsTxt.setText("");
+
+        }catch ( Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void clickListener(){
 
+        UserProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askForCameraPermission();
+            }
+        });
+
         editProfileTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(parentLayout,"",Snackbar.LENGTH_SHORT).show();
+                if(sharedPreferences.getString("user_type","").equals("candidate")){
+                    Intent intent = new Intent(EditProfileActivity.this, EditCandidateActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(EditProfileActivity.this, EditemployeActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -90,5 +307,182 @@ public class EditProfileActivity extends SlidingFragmentActivity {
         ft.replace(viewResource, fragment);
         ft.commit();
         toggle();
+    }
+
+    @Override
+    public void requestFinished(String[] result) throws Exception {
+            if(result[0].equals("01")){
+                setcompanyData();
+//                Toast.makeText(getApplicationContext(),""+Global.companylist.get(0).getEmail(),Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                 editor.putString("email", "" + Global.companylist.get(0).getEmail());
+                 editor.putString("user_type", "" + Global.companylist.get(0).getUser_type());
+                editor.commit();
+            }else if(result[0].equals("001")){
+
+                setcandidateData();
+                Toast.makeText(getApplicationContext(),""+Global.candidatelist.get(0).getEmail(),Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("email", "" + Global.candidatelist.get(0).getEmail());
+                editor.putString("user_type", "" + Global.candidatelist.get(0).getUser_type());
+                editor.commit();
+            }
+    }
+
+
+    public void showDialog() {
+
+        final Dialog dialog = new Dialog(EditProfileActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.camera_popup_layut);
+        dialog.show();
+
+        TextView cancelTxt = (TextView) dialog.findViewById(R.id.cancelTxt);
+        cancelTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        TextView takePhotoTxt = (TextView) dialog.findViewById(R.id.takePhotoTxt);
+        takePhotoTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 1);
+                dialog.dismiss();
+            }
+        });
+
+        TextView galleryTxt = (TextView) dialog.findViewById(R.id.galleryTxt);
+        galleryTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 2);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2 && resultCode == RESULT_OK
+                && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            String myfilePath = picturePath;
+            File imgFile = new File(myfilePath);
+
+            Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,selectedImage);
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            UserProfileImage.setImageBitmap(myBitmap);
+
+
+        } else if (requestCode == 1) try {
+            if (data != null) {
+
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                File destination = new File(Environment.getExternalStorageDirectory(),
+                        System.currentTimeMillis() + ".jpg");
+                FileOutputStream fo;
+                try {
+                    destination.createNewFile();
+                    fo = new FileOutputStream(destination);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,tempUri);
+//                Toast.makeText(getApplicationContext(),""+Constant.USER_IMAGE,Toast.LENGTH_SHORT).show();
+                UserProfileImage.setImageBitmap(thumbnail);
+
+
+                /*Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Uri tempUri = getImageUri(getApplicationContext(), photo);
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(tempUri,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                String myfilePath = picturePath;
+
+                File imgFile = new File(myfilePath);
+
+                Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,tempUri);
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                UserProfileImage.setImageBitmap(myBitmap);*/
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getImageString(String imagepath) {
+
+        Bitmap bm = BitmapFactory.decodeFile(imagepath);
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+        byte[] ba = bao.toByteArray();
+
+        String ba1 = Base64.encodeToString(ba, Base64.NO_WRAP);
+        Log.e("","Image path : "+ba1);
+        return ba1;
+    }
+
+    public String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public void askForCameraPermission() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                marshMallowPermission.requestPermissionForExternalStorage();
+            } else {
+                showDialog();
+            }
+        } else {
+            showDialog();
+        }
     }
 }

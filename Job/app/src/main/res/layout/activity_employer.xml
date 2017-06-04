@@ -7,19 +7,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
-        <TextView
+        <utils.TextviewSemiBold
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:text="EMPLOYER REGISTRATION"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp"
-            android:paddingTop="10dp"
-            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/header_font"
+            android:gravity="center"
             android:background="@color/colorAccent">
-        </TextView>
+        </utils.TextviewSemiBold>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="COMPANY NAME"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="CONTACT PERSON" />
             </android.support.design.widget.TextInputLayout>
 
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="EMAIL ID" />
             </android.support.design.widget.TextInputLayout>
 
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="PHONE"
-                    android:textSize="18dp"/>
+                    android:textSize="@dimen/medium_font"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -108,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="PASSWORD" />
             </android.support.design.widget.TextInputLayout>
 
@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="CURRENT REQUIREMENT"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="EXPERIENCE"
-                    android:textSize="18dp"/>
+                    android:textSize="@dimen/medium_font"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -173,7 +173,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="SKILLS" />
             </android.support.design.widget.TextInputLayout>
 
@@ -189,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="JOB ROLE" />
             </android.support.design.widget.TextInputLayout>
 
@@ -205,7 +205,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="LOCATION" />
             </android.support.design.widget.TextInputLayout>
 
@@ -221,7 +221,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/medium_font"
                     android:hint="ADDRESS" />
             </android.support.design.widget.TextInputLayout>
 
@@ -257,7 +257,7 @@
                     android:layout_width="200dp"
                     android:layout_height="40dp">
 
-                    <TextView
+                    <utils.TextviewSemiBold
                         android:textStyle="bold"
                         android:text="SUBMIT &amp; CONTINUE!"
                         android:layout_width="wrap_content"

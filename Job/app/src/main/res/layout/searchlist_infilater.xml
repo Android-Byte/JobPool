@@ -20,9 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <utils.TextviewSemiBold
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="@dimen/medium_font"
                 android:textColor="#000000"
                 android:text="Candidate Name"
                 android:layout_width="match_parent"
@@ -35,8 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:textSize="16sp"
+                <utils.TextviewFont
+                    android:textSize="@dimen/medium_font"
                     android:gravity="center_vertical"
                     android:drawableLeft="@drawable/ic_location"
                     android:textColor="#000000"
@@ -46,8 +46,8 @@
                     android:id="@+id/textView3"
                     android:layout_weight="1" />
 
-                <TextView
-                    android:textSize="16sp"
+                <utils.TextviewFont
+                    android:textSize="@dimen/medium_font"
                     android:gravity="center_vertical"
                     android:drawableLeft="@drawable/ic_library"
                     android:textColor="#000000"
@@ -64,10 +64,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:textSize="16sp"
+                <utils.TextviewFont
+                    android:textSize="@dimen/medium_font"
                     android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/assignment_list"
+                    android:drawableLeft="@drawable/ic_assignment"
                     android:textColor="#000000"
                     android:text="Android developer"
                     android:layout_width="match_parent"
@@ -85,22 +85,24 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/showInterestLayout"
             android:gravity="center"
-            android:background="@drawable/fillbaoundry"
+            android:background="@color/colorAccent"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="25sp">
 
-                <TextView
-                    android:textSize="12sp"
+                <utils.TextviewFont
+                    android:textSize="@dimen/small_font"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:text="Show Internet"/>
+                    android:text="Show Interest"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/contactLayout"
                 android:layout_marginTop="10sp"
                 android:orientation="vertical"
                 android:background="#000000"
@@ -108,8 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="25sp">
 
-                <TextView
-                    android:textSize="12sp"
+                <utils.TextviewFont
+                    android:textSize="@dimen/small_font"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
@@ -120,9 +122,16 @@
         </LinearLayout>
     </LinearLayout>
     <View
+        android:id="@+id/viewfirst"
         android:layout_marginBottom="0.5sp"
         android:layout_below="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0.5sp"
-        android:background="#000000"></View>
+        android:background="#C9c9c9"></View>
+    <View
+        android:layout_marginBottom="0.5sp"
+        android:layout_below="@+id/viewfirst"
+        android:layout_width="match_parent"
+        android:layout_height="0.5sp"
+        android:background="@color/white_one"></View>
 </RelativeLayout>
