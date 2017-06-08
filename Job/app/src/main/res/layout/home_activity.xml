@@ -67,8 +67,9 @@
             >
 
             <EditText
+
                 android:drawableRight="@drawable/description"
-                android:id="@+id/input_skills"
+                android:id="@+id/skillesediTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Skills,Job,Role"
@@ -84,7 +85,7 @@
 
             <EditText
                 android:drawableRight="@drawable/location"
-                android:id="@+id/input_city"
+                android:id="@+id/locationEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="City"

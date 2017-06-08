@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -20,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -71,6 +73,9 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
     private AccessTokenTracker accessTokenTracker;
     LoginButton login_button;
     SharedPreferences sharedPreferences;
+    RelativeLayout parentLayout;
+    EditText skillesediTxt, locationEdit;
+
 
     LinearLayout facebookLayout, googleLayout, registerLayout, loginLayout, findContactLayout;
 
@@ -138,6 +143,9 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         loginLayout = (LinearLayout)findViewById(R.id.loginLayout);
         findContactLayout = (LinearLayout)findViewById(R.id.findContactLayout);
         marshMallowPermission = new MarshMallowPermission(HomeActivity.this);
+        parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
+        skillesediTxt = (EditText)findViewById(R.id.skillesediTxt);
+        locationEdit  = (EditText)findViewById(R.id.locationEdit);
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (!marshMallowPermission.checkPermissionForExternalStorage()) {
@@ -288,9 +296,24 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         findContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-                startActivity(intent);*/
+                if(skillesediTxt.getText().length()!=0){
+                    if(locationEdit.getText().length()!=0){
 
+                        Constant.SKILLES = skillesediTxt.getText().toString();
+                        Constant.LOCATION = locationEdit.getText().toString();
+
+                        if(sharedPreferences.getString("user_type","").equals("candidate")){
+                            Toast.makeText(getApplicationContext(),"Company Searching Comming Soon.!",Toast.LENGTH_LONG).show();
+                        }else {
+                            searchApiSerivice();
+                        }
+
+                    }else {
+                        Snackbar.make(parentLayout,"Please enter location.!",Snackbar.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Snackbar.make(parentLayout,"Please enter skilles",Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -376,6 +399,12 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         employer.execute();
     }
 
+    public void searchApiSerivice() {
+        WebserviceHelper searchAPI = new WebserviceHelper(receiver, HomeActivity.this);
+        searchAPI.setAction(Constant.SEARCH_API);
+        searchAPI.execute();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -403,7 +432,11 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
             Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-
+        }if(result[0].equals("0001")){
+            Intent intent = new Intent(HomeActivity.this, AllListActivity.class);
+            startActivity(intent);
+        }else {
+            Snackbar.make(parentLayout,""+result[1],Snackbar.LENGTH_SHORT).show();
         }
     }
 }

@@ -31,6 +31,7 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
     LinearLayout SubmiTLayout;
     ScrollView parentLayout;
     SharedPreferences sharedPreferences;
+    MenuFragment menuFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
     public void init(){
 
         receiver = this;
+        menuFragment = new MenuFragment();
         sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
         nameCompanyEditTxt = (EditText)findViewById(R.id.nameCompanyEditTxt);
         contactPersonEditTxt = (EditText)findViewById(R.id.contactPersonEditTxt);
@@ -111,9 +113,14 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
     @Override
     public void requestFinished(String[] result) throws Exception {
             if(result[0].equals("1")){
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("company_name", "" + Global.companylist.get(0).getCompany_name());
+                editor.commit();
+                menuFragment.updateName();
                 final Dialog dialog = new Dialog(EditemployeActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.alertpopup);
+                dialog.show();
                 TextView massageTxtView = (TextView) dialog.findViewById(R.id.massageTxtView);
                 massageTxtView.setText(result[1]);
                 LinearLayout submitLayout = (LinearLayout)dialog.findViewById(R.id.submitLayout);
@@ -124,7 +131,6 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
                     }
                 });
 
-                dialog.show();
             }
     }
 }

@@ -1,7 +1,8 @@
 package com.example.dell.job;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -19,21 +20,30 @@ import android.widget.Toast;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-import adapter.SearchAdapter;
+import adapter.CandidateSearchAdapter;
+import adapter.EmployeeSearchAdapter;
+import utils.Constant;
+import utils.Global;
+import utils.RequestReceiver;
+import utils.WebserviceHelper;
 
 /**
  * Created by chauhan on 5/13/2017.
  */
 
-public class SearchActivity extends SlidingFragmentActivity {
+public class SearchActivity extends SlidingFragmentActivity implements RequestReceiver {
 
     ListView searchListView;
     EditText skillesediTxt, locationEdit;
     LinearLayout searchLayout, slidMenuLayout ;
-    SearchAdapter adapter;
+    EmployeeSearchAdapter adapter;
     SlidingMenu sm;
     RelativeLayout filterLayout, parentLayout;
     boolean doubleBackToExitPressedOnce = false;
+    SharedPreferences sharedPreferences;
+    RequestReceiver receiver;
+    EmployeeSearchAdapter employeeSearchAdapter;
+    CandidateSearchAdapter candidateSearchAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,9 @@ public class SearchActivity extends SlidingFragmentActivity {
     }
 
     public void init(){
+
+        sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
+        receiver = this;
         searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
         slidMenuLayout = (LinearLayout) findViewById(R.id.slidMenuLayout);
         skillesediTxt = (EditText) findViewById(R.id.skillesediTxt);
@@ -63,8 +76,13 @@ public class SearchActivity extends SlidingFragmentActivity {
         filterLayout = (RelativeLayout)findViewById(R.id.filterLayout);
         parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
 
-        adapter = new SearchAdapter(SearchActivity.this,SearchActivity.this);
-        searchListView.setAdapter(adapter);
+
+        Constant.EMAIL = sharedPreferences.getString("email","");
+        if(sharedPreferences.getString("user_type","").equals("candidate")){
+            getEmployeeTopTenSerivice();
+        }else {
+            getCandidatetopTenSerivice();
+        }
     }
 
     @Override
@@ -133,8 +151,16 @@ public class SearchActivity extends SlidingFragmentActivity {
             public void onClick(View view) {
                 if(skillesediTxt.getText().length()!=0){
                     if(locationEdit.getText().length()!=0){
-                            Intent  intent = new Intent(SearchActivity.this, AllListActivity.class);
-                            startActivity(intent);
+
+                        Constant.SKILLES = skillesediTxt.getText().toString();
+                        Constant.LOCATION = locationEdit.getText().toString();
+
+                        if(sharedPreferences.getString("user_type","").equals("candidate")){
+                            Toast.makeText(getApplicationContext(),"Company Searching Comming Soon.!",Toast.LENGTH_LONG).show();
+                        }else {
+                            searchApiSerivice();
+                        }
+
                     }else {
                         Snackbar.make(parentLayout,"Please enter location.!",Snackbar.LENGTH_SHORT).show();
                     }
@@ -145,14 +171,40 @@ public class SearchActivity extends SlidingFragmentActivity {
         });
     }
 
-    public void closeToggle(){
-        sm = getSlidingMenu();
-        sm.setShadowWidthRes(R.dimen.shadow_width);
-        sm.setShadowDrawable(R.drawable.shadow);
-        sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        sm.setFadeDegree(0.35f);
-        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        sm.setSlidingEnabled(false);
-        sm.toggle();
+
+    public void getCandidatetopTenSerivice() {
+        WebserviceHelper candidateTop = new WebserviceHelper(receiver, SearchActivity.this);
+        candidateTop.setAction(Constant.CADIDATE_TOP_TEN);
+        candidateTop.execute();
+    }
+
+    public void getEmployeeTopTenSerivice() {
+        WebserviceHelper employeeTop = new WebserviceHelper(receiver, SearchActivity.this);
+        employeeTop.setAction(Constant.EMPLOYEETOP_TEN);
+        employeeTop.execute();
+    }
+
+    public void searchApiSerivice() {
+        WebserviceHelper searchAPI = new WebserviceHelper(receiver, SearchActivity.this);
+        searchAPI.setAction(Constant.SEARCH_API);
+        searchAPI.execute();
+    }
+
+    @Override
+    public void requestFinished(String[] result) throws Exception {
+            if(result[0].equals("01")){
+                if(sharedPreferences.getString("user_type","").equals("candidate")){
+                    employeeSearchAdapter = new EmployeeSearchAdapter(SearchActivity.this,SearchActivity.this, Global.companylist);
+                    searchListView.setAdapter(employeeSearchAdapter);
+                }else {
+                    candidateSearchAdapter = new CandidateSearchAdapter(SearchActivity.this,SearchActivity.this, Global.candidatelist);
+                    searchListView.setAdapter(candidateSearchAdapter);
+                }
+            }else if(result[0].equals("0001")){
+                        Intent  intent = new Intent(SearchActivity.this, AllListActivity.class);
+                        startActivity(intent);
+            }else {
+                Snackbar.make(parentLayout,""+result[1],Snackbar.LENGTH_SHORT).show();
+            }
     }
 }

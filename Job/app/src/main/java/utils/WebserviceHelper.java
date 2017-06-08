@@ -1076,6 +1076,72 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
 
             case Constant.UPDATE_EMPLOYER_PIC:
 
+                String[] freesign = new String[3];
+                httppost = new HttpPost(Constant.UPDATE_EMPLOYER_PIC_URL);
+                Log.e("", "Constant.SIGNUP_URL : " + Constant.UPDATE_EMPLOYER_PIC_URL);
+
+                try {
+                    MultipartEntity entity = new MultipartEntity();
+                    try {
+                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
+                        File file = new File(Constant.USER_IMAGE);
+                        FileBody bin = new FileBody(file);
+                        entity.addPart("profile_image", bin);
+                    } catch (Exception e) {
+                        Log.v("Exception in Image", "" + e);
+                    }
+                    entity.addPart("company_id", new StringBody(Constant.EMAIL));
+
+                    httppost.setEntity(entity);
+                    try {
+                        response1 = httpclient.execute(httppost);
+                        Log.d("myapp", "response " + response1.getEntity());
+                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    InputStream inputStream = response1.getEntity().getContent();
+                    InputStreamReader inputStreamReader = new InputStreamReader(
+                            inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(
+                            inputStreamReader);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+                    String encodeRes = "";
+                    JSONObject object = null;
+
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
+                        encodeRes = stringBuilder.toString();
+                        try {
+                            object = new JSONObject(encodeRes);
+                            Log.d("", "jsonObj responce... " + object);
+                            freesign[0] = object.getString("success");
+                            freesign[1] = object.getString("message");
+                            Constant.USER_ID = object.getString("user_id");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            freesign[0] = object.getString("success");
+                            freesign[1] = object.getString("message");
+                        }
+                        break;
+                    }
+
+                    return freesign;
+
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+
+                break;
+
+
+           /* case Constant.UPDATE_EMPLOYER_PIC:
+
                 String[] updateempPic = new String[3];
                 httppost = new HttpPost(Constant.UPDATE_EMPLOYER_PIC_URL);
                 Log.e("", "Constant.SIGNUP_URL : " + Constant.UPDATE_EMPLOYER_PIC_URL);
@@ -1085,11 +1151,11 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                         Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
                         File file = new File(Constant.USER_IMAGE);
                         FileBody bin = new FileBody(file);
-                        entity.addPart("image", bin);
+                        entity.addPart("profile_image", bin);
                     } catch (Exception e) {
                         Log.v("Exception in Image", "" + e);
                     }
-                    entity.addPart("user_type", new StringBody(Constant.USER_TYPE));
+                    entity.addPart("email", new StringBody(Constant.EMAIL));
 
                     httppost.setEntity(entity);
                     try {
@@ -1118,10 +1184,11 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                         try {
                             object = new JSONObject(encodeRes);
                             Log.d("", "jsonObj responce... " + object);
-                            updateempPic[0] = object.getString("success");
+                            updateempPic[0] = "10"+object.getString("success");
                             updateempPic[1] = object.getString("message");
 
                             jsondata = object.getJSONObject("data");
+                            Constant.USER_IMAGE = jsondata.getString("profile_pic");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1133,6 +1200,428 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                     return updateempPic;
                 } catch (Exception e) {
                     // TODO: handle exception
+                }
+                break;*/
+
+            case Constant.UPDATE_CADIDATE_PIC:
+
+                String[] updatepic = new String[3];
+                httppost = new HttpPost(Constant.UPDATE_CANDIDATE_PIC_URL);
+                Log.e("", "Constant.SIGNUP_URL : " + Constant.UPDATE_CANDIDATE_PIC_URL);
+
+                try {
+                    MultipartEntity entity = new MultipartEntity();
+                    try {
+                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
+                        File file = new File(Constant.USER_IMAGE);
+                        FileBody bin = new FileBody(file);
+                        entity.addPart("profile_image", bin);
+                    } catch (Exception e) {
+                        Log.v("Exception in Image", "" + e);
+                    }
+                    entity.addPart("company_id", new StringBody(Constant.EMAIL));
+
+                    httppost.setEntity(entity);
+                    try {
+                        response1 = httpclient.execute(httppost);
+                        Log.d("myapp", "response " + response1.getEntity());
+                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    InputStream inputStream = response1.getEntity().getContent();
+                    InputStreamReader inputStreamReader = new InputStreamReader(
+                            inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(
+                            inputStreamReader);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+                    String encodeRes = "";
+                    JSONObject object = null;
+
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
+                        encodeRes = stringBuilder.toString();
+                        try {
+                            object = new JSONObject(encodeRes);
+                            Log.d("", "jsonObj responce... " + object);
+                            updatepic[0] = object.getString("success");
+                            updatepic[1] = object.getString("message");
+                            Constant.USER_ID = object.getString("user_id");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            updatepic[0] = object.getString("success");
+                            updatepic[1] = object.getString("message");
+                        }
+                        break;
+                    }
+
+                    return updatepic;
+
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+
+                break;
+
+           /* case Constant.UPDATE_CADIDATE_PIC:
+
+                String[] candidate_pic = new String[3];
+                httppost = new HttpPost(Constant.UPDATE_CANDIDATE_PIC_URL);
+                Log.e("", "Constant.UPDATE_CANDIDATE_PIC_URL : " + Constant.UPDATE_CANDIDATE_PIC_URL);
+                try {
+                    MultipartEntity entity = new MultipartEntity();
+                    try {
+                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
+                        File file = new File(Constant.USER_IMAGE);
+                        FileBody bin = new FileBody(file);
+                        entity.addPart("profile_image", bin);
+                    } catch (Exception e) {
+                        Log.v("Exception in Image", "" + e);
+                    }
+                    entity.addPart("email", new StringBody(Constant.EMAIL));
+
+                    httppost.setEntity(entity);
+                    try {
+                        response1 = httpclient.execute(httppost);
+                        Log.d("myapp", "response " + response1.getEntity());
+                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    InputStream inputStream = response1.getEntity().getContent();
+                    InputStreamReader inputStreamReader = new InputStreamReader(
+                            inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(
+                            inputStreamReader);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+                    String encodeRes = "";
+                    JSONObject jsondata = null;
+                    JSONObject object = null;
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
+                        encodeRes = stringBuilder.toString();
+                        try {
+                            object = new JSONObject(encodeRes);
+                            Log.d("", "jsonObj responce... " + object);
+                            candidate_pic[0] ="10"+ object.getString("success");
+                            candidate_pic[1] = object.getString("message");
+                            jsondata = object.getJSONObject("data");
+                            Constant.USER_IMAGE = jsondata.getString("profile_pic");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            candidate_pic[0] = object.getString("success");
+                            candidate_pic[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return candidate_pic;
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                break;*/
+
+            case Constant.EMPLOYEETOP_TEN:
+                String[] employeeTen = new String[3];
+                httppost = new HttpPost(Constant.UPDATE_EMPLOYEE_TOP_TEN_URL);
+                try {
+                    try {
+
+                        jsonData.accumulate("","");
+
+                        Log.e("","URL "+Constant.UPDATE_EMPLOYEE_TOP_TEN_URL);
+                        Log.e("Json : ",""+jsonData.toString(1));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+                    Global.companylist.clear();
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+                            employeeTen[0] = "0"+object.getString("success");
+                            employeeTen[1] = object.getString("message");
+
+                            try {
+                                JSONArray jsonArray = object.getJSONArray("data");
+
+                                for(int i=0; i<jsonArray.length();i++){
+
+                                    object = jsonArray.getJSONObject(i);
+                                    CompanyDTO companyDTO = new CompanyDTO();
+                                    companyDTO.setEmployer_id(object.getString("employer_id"));
+                                    companyDTO.setCompany_name(object.getString("company_name"));
+                                    companyDTO.setContact_person(object.getString("contact_person"));
+                                    companyDTO.setEmail(object.getString("email"));
+                                    companyDTO.setPhone(object.getString("phone"));
+                                    companyDTO.setCurrent_requirment(object.getString("current_requirment"));
+                                    companyDTO.setExperience(object.getString("experience"));
+                                    companyDTO.setSkill(object.getString("skill"));
+//                                companyDTO.setJob_role(object1.getString("job_role"));
+                                    companyDTO.setLocation(object.getString("location"));
+                                    companyDTO.setAddress(object.getString("address"));
+//                                companyDTO.setExp_date(object1.getString("exp_date"));
+                                    companyDTO.setEmppackage(object.getString("package"));
+                                    companyDTO.setAmount(object.getString("amount"));
+                                    companyDTO.setUser_type(object.getString("user_type"));
+                                    companyDTO.setEmp_Image(object.getString("employer_image"));
+
+                                    Global.companylist.add(companyDTO);
+
+                                }
+
+                                Log.e("","List Size : "+Global.companylist.size());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            employeeTen[0] = object.getString("success");
+                            employeeTen[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return employeeTen;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+
+            case Constant.CADIDATE_TOP_TEN :
+                String[] cadidatetop = new String[3];
+                httppost = new HttpPost(Constant.UPDATE_CANDIDATE_TOP_TEN_URL);
+                try {
+                    try {
+                        jsonData.accumulate("", "");
+                        Log.e("","URL "+Constant.UPDATE_CANDIDATE_TOP_TEN_URL);
+                        Log.e("Json : ",""+jsonData.toString(1));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+                    Global.candidatelist.clear();
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+                            cadidatetop[0] = "0"+object.getString("success");
+                            cadidatetop[1] = object.getString("message");
+                            try {
+                                JSONArray array = object.getJSONArray("data");
+                                for(int i=0;i<array.length();i++){
+                                    JSONObject jsonObject = array.getJSONObject(i);
+                                    CandidateDTO candidateDTO = new CandidateDTO();
+                                    candidateDTO.setUserId(jsonObject.getString("user_id"));
+                                    candidateDTO.setName(jsonObject.getString("name"));
+                                    candidateDTO.setUserName(jsonObject.getString("user_name"));
+                                    candidateDTO.setEmail(jsonObject.getString("email"));
+                                    candidateDTO.setPhone(jsonObject.getString("phone"));
+                                    candidateDTO.setGender(jsonObject.getString("gender"));
+                                    candidateDTO.setLocation(jsonObject.getString("location"));
+                                    candidateDTO.setUserImage(jsonObject.getString("image"));
+                                    candidateDTO.setBrief_description(jsonObject.getString("brief_description"));
+                                    candidateDTO.setSkill(jsonObject.getString("skill"));
+                                    candidateDTO.setAddress(jsonObject.getString("address"));
+                                    candidateDTO.setUser_type(jsonObject.getString("user_type"));
+                                    candidateDTO.setDesignation(jsonObject.getString("designation"));
+                                    candidateDTO.setExperience(jsonObject.getString("experience"));
+
+                                    Global.candidatelist.add(candidateDTO);
+                                }
+
+                                Log.e("","Candidate List"+Global.candidatelist.size());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            cadidatetop[0] = object.getString("success");
+                            cadidatetop[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return cadidatetop;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Constant.SEARCH_API:
+                String[] searchapi = new String[3];
+                httppost = new HttpPost(Constant.SEARCH_URL);
+                try {
+                    try {
+                        jsonData.accumulate("skill", Constant.SKILLES);
+                        jsonData.accumulate("location", Constant.LOCATION);
+
+                        Log.e("","URL "+Constant.SEARCH_URL);
+                        Log.e("Json : ",""+jsonData.toString(12));
+                        StringEntity se = new StringEntity(jsonData.toString());
+                        httppost.setEntity(se);
+                        httppost.setHeader("Accept", "application/json");
+                        httppost.setHeader("Content-type", "application/json");
+                        try {
+                            response1 =httpclient.execute(httppost);
+                            if(response1!=null){
+                                Log.e("","responce");
+                                jsonData.has("success");
+                            }else {
+                                Log.e("","Null responce");
+                            }
+                            response1.getStatusLine().getStatusCode();
+                            StatusLine statusLine = response1.getStatusLine();
+                            Log.e("myapp", "response statau.." + response1.getStatusLine().getStatusCode());
+                            Log.e("myapp", "response.. " + response1.getEntity());
+
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    InputStream inputStream = response1.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF8"),8);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(reader.readLine() + "\n");
+                    String line="0";
+                    String result = "";
+                    JSONObject object = null;
+                    Global.candidatelist.clear();
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        result = sb.toString();
+                        Log.e("","encodeRes : "+result);
+
+                        try {
+                            object = new JSONObject(result);
+                            Log.d("","jsonObj responce... "+object);
+                            searchapi[0] = "000"+object.getString("success");
+                            searchapi[1] = object.getString("message");
+
+                            try {
+                                JSONArray array = object.getJSONArray("data");
+                                for(int i=0;i<array.length();i++){
+                                    JSONObject object1 = array.getJSONObject(i);
+                                    CandidateDTO candidateDTO = new CandidateDTO();
+
+                                    candidateDTO.setUserId(object1.getString("user_id"));
+                                    candidateDTO.setName(object1.getString("name"));
+                                    candidateDTO.setUserName(object1.getString("user_name"));
+                                    candidateDTO.setEmail(object1.getString("email"));
+                                    candidateDTO.setPhone(object1.getString("phone"));
+                                    candidateDTO.setGender(object1.getString("gender"));
+                                    candidateDTO.setLocation(object1.getString("location"));
+                                    candidateDTO.setUserImage(object1.getString("image"));
+                                    candidateDTO.setBrief_description(object1.getString("brief_description"));
+                                    candidateDTO.setSkill(object1.getString("skill"));
+                                    candidateDTO.setAddress(object1.getString("address"));
+                                    candidateDTO.setUser_type(object1.getString("user_type"));
+                                    candidateDTO.setDesignation(object1.getString("designation"));
+                                    candidateDTO.setExperience(object1.getString("experience"));
+
+                                    Global.candidatelist.add(candidateDTO);
+                                }
+
+                                Log.e("","Size : "+Global.candidatelist.size());
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                searchapi[0] = "000"+object.getString("success");
+                                searchapi[1] = object.getString("message");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            searchapi[0] = "000"+object.getString("success");
+                            searchapi[1] = object.getString("message");
+                        }
+                        break;
+                    }
+                    return searchapi;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
 

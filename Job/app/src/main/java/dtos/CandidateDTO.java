@@ -5,16 +5,47 @@ package dtos;
  */
 
 public class CandidateDTO {
+    public String getDesignation() {
+        return designation;
+    }
 
-    String name, phone, gender, location, experience, skill, strength,
-            expected_salary, address, prefered_location,objective, brief_description, email, user_type;
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    String name, phone, gender, location, experience, skill, strength,userName,designation,
+            expected_salary, address, prefered_location,objective, brief_description, email, user_type, UserImage,UserId;
 
     public String getName() {
         return name;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUserImage() {
+        return UserImage;
+    }
+
+    public void setUserImage(String userImage) {
+        UserImage = userImage;
     }
 
     public String getPhone() {

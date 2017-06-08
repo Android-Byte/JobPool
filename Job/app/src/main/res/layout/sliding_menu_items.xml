@@ -40,6 +40,18 @@
                     android:text="CANDIDATE NAME"
                     android:layout_below="@+id/imageView3"
                     android:layout_centerHorizontal="true" />
+
+                <utils.TextviewFont
+                    android:textSize="10sp"
+                    android:textColor="@color/white_one"
+                    android:id="@+id/userTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CANDIDATE"
+                    android:layout_below="@+id/imageView3"
+                    android:layout_centerHorizontal="true" />
+
+
             </LinearLayout>
 
 

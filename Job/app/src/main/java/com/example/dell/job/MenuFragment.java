@@ -34,9 +34,10 @@ public class MenuFragment extends Fragment implements RequestReceiver{
     private View rootView;
     LinearLayout profileLayout, searchLayout, notificationLayout, aboutusLayout,
             change_passwordLayout, privacyPolicyLayout, termsLayout, logoutLayout, paymentLayout;
-    TextView userNameTxt, searchCandidate;
+    TextView  searchCandidate, userTxt;
+    static TextView userNameTxt;
     RequestReceiver receiver;
-    SharedPreferences sharedPreferences;
+    static  SharedPreferences sharedPreferences;
     SearchActivity searchActivity;
 
     public static Fragment newInstance() {
@@ -65,21 +66,33 @@ public class MenuFragment extends Fragment implements RequestReceiver{
         logoutLayout = (LinearLayout)rootView.findViewById(R.id.logoutLayout);
         userNameTxt = (TextView)rootView.findViewById(R.id.userNameTxt);
         searchCandidate = (TextView)rootView.findViewById(R.id.searchCandidate);
+        userTxt = (TextView)rootView.findViewById(R.id.userTxt) ;
 
         searchActivity = new SearchActivity();
         Constant.EMAIL = sharedPreferences.getString("email","");
 
         if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
             searchCandidate.setText("Search Company");
+
             userNameTxt.setText(sharedPreferences.getString("user_name",""));
         }else {
             searchCandidate.setText("Search Candidates");
+            userTxt.setVisibility(View.GONE);
             userNameTxt.setText(sharedPreferences.getString("company_name",""));
         }
 
         return rootView;
     }
 
+    public static void updateName (){
+
+        if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
+            userNameTxt.setText(sharedPreferences.getString("user_name",""));
+        }else {
+            userNameTxt.setText(sharedPreferences.getString("company_name",""));
+        }
+
+    }
 
     @Override
     public void onResume() {

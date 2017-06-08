@@ -30,6 +30,9 @@ public class Constant {
 	public static final int UPDATE_EMPLOYER_PROFILE = 11;
 	public static final int UPDATE_EMPLOYER_PIC = 12;
 	public static final int UPDATE_CADIDATE_PIC = 13;
+	public static final int CADIDATE_TOP_TEN = 14;
+	public static final int EMPLOYEETOP_TEN = 15;
+	public static final int SEARCH_API = 16;
 
 	public static String BASE_URL ="http://smtgroup.in/jobpools/wdiapi/index.php/";
 
@@ -43,8 +46,11 @@ public class Constant {
 	public static String GET_PROFILE_URL = BASE_URL+"get_profile";
 	public static String UPDATE_CANDIDATE_PROFILE_URL = BASE_URL+"candidate_update";
 	public static String UPDATE_EMPLOYER_PROFILE_URL = BASE_URL+"employer_update";
-	public static String UPDATE_EMPLOYER_PIC_URL = BASE_URL+"employer_update";
-	public static String UPDATE_CANDIDATE_PIC_URL = BASE_URL+"employer_update";
+	public static String UPDATE_EMPLOYER_PIC_URL = BASE_URL+"employer_profilepic";
+	public static String UPDATE_CANDIDATE_PIC_URL = BASE_URL+"candidate_profilepic";
+	public static String UPDATE_CANDIDATE_TOP_TEN_URL = BASE_URL+"topten_candidate";
+	public static String UPDATE_EMPLOYEE_TOP_TEN_URL = BASE_URL+"topten_employer";
+	public static String SEARCH_URL = BASE_URL+"candidate_search";
 
 	public static String NAME="";
 	public static String USER_NAME="";

@@ -14,7 +14,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import adapter.NotifictionAdapter;
-import adapter.SearchAdapter;
 
 /**
  * Created by chauhan on 5/14/2017.

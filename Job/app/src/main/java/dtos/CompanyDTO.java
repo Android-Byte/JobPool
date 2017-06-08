@@ -7,9 +7,31 @@ package dtos;
 public class CompanyDTO {
  
 
-    String  employer_id, company_name, contact_person, email,phone,
-            current_requirment, experience, skill, job_role,
-            location, address, exp_date, emppackage, amount, user_type;
+    String  employer_id;
+    String company_name;
+    String contact_person;
+    String email;
+    String phone;
+
+    public String getEmp_Image() {
+        return emp_Image;
+    }
+
+    public void setEmp_Image(String emp_Image) {
+        this.emp_Image = emp_Image;
+    }
+
+    String current_requirment;
+    String experience;
+    String skill;
+    String job_role;
+    String location;
+    String address;
+    String exp_date;
+    String emppackage;
+    String amount;
+    String user_type;
+    String emp_Image;
 
     public String getEmployer_id() {
         return employer_id;

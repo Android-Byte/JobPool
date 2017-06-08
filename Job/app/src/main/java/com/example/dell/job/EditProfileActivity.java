@@ -105,7 +105,7 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
 
         bottomLayout = (LinearLayout)findViewById(R.id.bottomLayout);
         Constant.EMAIL = sharedPreferences.getString("email","");
-//            Constant.EMAIL = "agrawal@gmail.com";
+
 
         if(sharedPreferences.getString("user_type","").equals("candidate")){
             getCandidateSerivice();
@@ -160,32 +160,44 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
         getprofile.execute();
     }
 
+    public void candidateSerivice() {
+        WebserviceHelper getprofile = new WebserviceHelper(receiver, EditProfileActivity.this);
+        getprofile.setAction(Constant.UPDATE_CADIDATE_PIC);
+        getprofile.execute();
+    }
+
+    public void employeeSerivice() {
+        WebserviceHelper getprofile = new WebserviceHelper(receiver, EditProfileActivity.this);
+        getprofile.setAction(Constant.UPDATE_EMPLOYER_PIC);
+        getprofile.execute();
+    }
+
     public void setcompanyData(){
 
         try {
             expLayout.setVisibility(View.GONE);
             skillesLayout.setVisibility(View.GONE);
-            if(Global.companylist.get(0).getCompany_name()!=null ){
+            if(!Global.companylist.get(0).getCompany_name().equals("null")){
                 nameTxt.setText(Global.companylist.get(0).getCompany_name());
             }else {
                 nameTxt.setText("");
             }
-            if(Global.companylist.get(0).getCompany_name()!=null){
+            if(!Global.companylist.get(0).getCompany_name().equals("null")){
                 cityTxt.setText(Global.companylist.get(0).getLocation());
             }else {
                 cityTxt.setText("");
             }
-            if(Global.companylist.get(0).getEmail()!=null){
+            if(!Global.companylist.get(0).getEmail().equals("null")){
                 emailTxt.setText(Global.companylist.get(0).getEmail());
             }else {
                 emailTxt.setText("");
             }
-            if(Global.companylist.get(0).getPhone()!=null){
+            if(!Global.companylist.get(0).getPhone().equals("null")){
                 contactTxt.setText("+91 "+Global.companylist.get(0).getPhone());
             }else {
                 contactTxt.setText("+91 ");
             }
-            if(Global.companylist.get(0).getAddress()!=null ){
+            if(!Global.companylist.get(0).getAddress().equals("null") ){
                 addressTxt.setText(Global.companylist.get(0).getAddress());
             }else {
                 addressTxt.setText("");
@@ -202,45 +214,37 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
 
         try{
 
-//            Toast.makeText(getApplicationContext(),""+Global.candidatelist.get(0).getLocation(),Toast.LENGTH_SHORT).show();
-//
-//            if(Global.candidatelist.get(0).getLocation()==null){
-//                Toast.makeText(getApplicationContext(),"null",Toast.LENGTH_SHORT).show();
-//            }else {
-//                Toast.makeText(getApplicationContext(),"Not Null"+Global.candidatelist.get(0).getLocation(),Toast.LENGTH_SHORT).show();
-//            }
-//
-            if(Global.candidatelist.get(0).getName()!=null){
+            if(!Global.candidatelist.get(0).getName().equals("null")){
                 nameTxt.setText(Global.candidatelist.get(0).getName());
             }else {
                 nameTxt.setText("");
             }
-            if(Global.candidatelist.get(0).getLocation()!=null){
+            if(!Global.candidatelist.get(0).getLocation().equals("null")){
                 cityTxt.setText(Global.candidatelist.get(0).getLocation());
             }else {
                 cityTxt.setText("");
             }
-            if(Global.candidatelist.get(0).getExperience()!=null ){
+            if(!Global.candidatelist.get(0).getExperience().equals("null") ){
                 experiencetTxt.setText(Global.candidatelist.get(0).getExperience());
             }else {
                 experiencetTxt.setText("");
             }
-            if(Global.candidatelist.get(0).getAddress()!=null){
+            if(!Global.candidatelist.get(0).getAddress().equals("null")){
                 addressTxt.setText(Global.candidatelist.get(0).getAddress());
             }else {
                 addressTxt.setText("");
             }
-            if(Global.candidatelist.get(0).getEmail()!=null || Global.candidatelist.get(0).getEmail().isEmpty()){
+            if(!Global.candidatelist.get(0).getEmail().equals("null")){
                 emailTxt.setText(Global.candidatelist.get(0).getEmail());
             }else {
                 emailTxt.setText("");
             }
-            if(Global.candidatelist.get(0).getPhone()!=null){
+            if(!Global.candidatelist.get(0).getPhone().equals("null")){
                 contactTxt.setText("+91 "+Global.candidatelist.get(0).getPhone());
             }else {
                 contactTxt.setText("+91 "+"");
             }
-            if(Global.candidatelist.get(0).getSkill()!=null){
+            if(!Global.candidatelist.get(0).getSkill().equals("null")){
                 skillesTxt.setText(Global.candidatelist.get(0).getSkill());
             }else {
                 skillesTxt.setText("");
@@ -266,6 +270,13 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
         editProfileTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                /*if(sharedPreferences.getString("user_type","").equals("candidate")){
+                    candidateSerivice();
+                }else {
+                    employeeSerivice();
+                }*/
+
                 if(sharedPreferences.getString("user_type","").equals("candidate")){
                     Intent intent = new Intent(EditProfileActivity.this, EditCandidateActivity.class);
                     startActivity(intent);
@@ -273,7 +284,6 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
                     Intent intent = new Intent(EditProfileActivity.this, EditemployeActivity.class);
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -313,18 +323,20 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
     public void requestFinished(String[] result) throws Exception {
             if(result[0].equals("01")){
                 setcompanyData();
-//                Toast.makeText(getApplicationContext(),""+Global.companylist.get(0).getEmail(),Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                 editor.putString("email", "" + Global.companylist.get(0).getEmail());
-                 editor.putString("user_type", "" + Global.companylist.get(0).getUser_type());
+                editor.putString("email", "" + Global.companylist.get(0).getEmail());
+                editor.putString("user_type", "" + Global.companylist.get(0).getUser_type());
+//                editor.putString("username",""+Global.companylist.get(0).getCompany_name());
                 editor.commit();
             }else if(result[0].equals("001")){
-
                 setcandidateData();
-                Toast.makeText(getApplicationContext(),""+Global.candidatelist.get(0).getEmail(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),""+Global.candidatelist.get(0).getEmail(),Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("email", "" + Global.candidatelist.get(0).getEmail());
-                editor.putString("user_type", "" + Global.candidatelist.get(0).getUser_type());
+                editor.putString("user_Image", "" + Constant.USER_IMAGE);
+                editor.commit();
+            }else if(result[0].equals("101")){
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("user_Image", "" + Constant.USER_IMAGE);
                 editor.commit();
             }
     }
@@ -384,15 +396,38 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
             File imgFile = new File(myfilePath);
 
             Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,selectedImage);
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
+            final Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             UserProfileImage.setImageBitmap(myBitmap);
+            final Dialog dialog = new Dialog(EditProfileActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.upload_images);
+            dialog.show();
 
+            TextView okayTxt = (TextView)dialog.findViewById(R.id.okayTxt);
+            TextView cancelTxt = (TextView) dialog.findViewById(R.id.cancelTxt);
+            cancelTxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
-        } else if (requestCode == 1) try {
+            okayTxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+
+                    if(sharedPreferences.getString("user_type","").equals("candidate")){
+                        candidateSerivice();
+                    }else {
+                        employeeSerivice();
+                    }
+                }
+            });
+       } else if (requestCode == 1) try {
             if (data != null) {
 
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                final Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
                 Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -410,26 +445,35 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
                     e.printStackTrace();
                 }
                 Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,tempUri);
-//                Toast.makeText(getApplicationContext(),""+Constant.USER_IMAGE,Toast.LENGTH_SHORT).show();
                 UserProfileImage.setImageBitmap(thumbnail);
+                final Dialog dialog = new Dialog(EditProfileActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.upload_images);
+                dialog.show();
+
+                TextView okayTxt = (TextView)dialog.findViewById(R.id.okayTxt);
+                TextView cancelTxt = (TextView) dialog.findViewById(R.id.cancelTxt);
+                cancelTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                okayTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+
+                        if(sharedPreferences.getString("user_type","").equals("candidate")){
+                            candidateSerivice();
+                        }else {
+                            employeeSerivice();
+                        }
+                    }
+                });
 
 
-                /*Bitmap photo = (Bitmap) data.getExtras().get("data");
-                Uri tempUri = getImageUri(getApplicationContext(), photo);
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(tempUri,
-                        filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String picturePath = cursor.getString(columnIndex);
-                cursor.close();
-                String myfilePath = picturePath;
-
-                File imgFile = new File(myfilePath);
-
-                Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,tempUri);
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                UserProfileImage.setImageBitmap(myBitmap);*/
 
             }
 

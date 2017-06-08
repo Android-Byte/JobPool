@@ -1,7 +1,9 @@
 package com.example.dell.job;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,12 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-import adapter.SearchAdapter;
+import adapter.CandidateSearchAdapter;
+import adapter.EmployeeSearchAdapter;
+import utils.Global;
+
 /**
  * Created by chauhan on 5/14/2017.
  */
@@ -22,9 +28,11 @@ import adapter.SearchAdapter;
 public class AllListActivity extends SlidingFragmentActivity {
 
     ListView searchListView;
-    SearchAdapter adapter;
+    CandidateSearchAdapter adapter;
     SlidingMenu sm;
     LinearLayout slidMenuLayout;
+    SharedPreferences sharedPreferences;
+    RelativeLayout parentLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +87,11 @@ public class AllListActivity extends SlidingFragmentActivity {
 
     public  void init(){
 
+        parentLayout = (RelativeLayout)findViewById(R.id.parentLayout);
         slidMenuLayout = (LinearLayout)findViewById(R.id.slidMenuLayout);
         searchListView = (ListView)findViewById(R.id.searchListView);
-        adapter = new SearchAdapter(AllListActivity.this,AllListActivity.this);
+        sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
+        adapter = new CandidateSearchAdapter(AllListActivity.this,AllListActivity.this, Global.candidatelist);
         searchListView.setAdapter(adapter);
 
     }
@@ -91,7 +101,13 @@ public class AllListActivity extends SlidingFragmentActivity {
         slidMenuLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sm.toggle();
+
+                if(sharedPreferences.getString("status","").equals("1")){
+                    sm.toggle();
+                }else {
+                    Snackbar.make(parentLayout,"Please Login.!",Snackbar.LENGTH_SHORT).show();
+                }
+
             }
         });
 
