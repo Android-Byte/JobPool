@@ -38,7 +38,7 @@
             android:gravity="right"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CANCLE"
+            android:text="CANCEL"
             android:textSize="18sp"
             android:id="@+id/cancelTxt"
             android:textColor="#000000"

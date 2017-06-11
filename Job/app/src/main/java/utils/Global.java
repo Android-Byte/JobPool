@@ -12,4 +12,5 @@ import dtos.CompanyDTO;
 public class Global {
     public static ArrayList<CompanyDTO> companylist = new ArrayList<>();
     public static ArrayList<CandidateDTO> candidatelist = new ArrayList<>();
+    public static ArrayList<CandidateDTO> searchcandidatelist = new ArrayList<>();
 }

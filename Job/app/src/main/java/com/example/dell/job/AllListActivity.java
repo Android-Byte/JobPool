@@ -91,7 +91,7 @@ public class AllListActivity extends SlidingFragmentActivity {
         slidMenuLayout = (LinearLayout)findViewById(R.id.slidMenuLayout);
         searchListView = (ListView)findViewById(R.id.searchListView);
         sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
-        adapter = new CandidateSearchAdapter(AllListActivity.this,AllListActivity.this, Global.candidatelist);
+        adapter = new CandidateSearchAdapter(AllListActivity.this,AllListActivity.this, Global.searchcandidatelist);
         searchListView.setAdapter(adapter);
 
     }

@@ -2,6 +2,8 @@ package com.example.dell.job;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import utils.Constant;
 import utils.Global;
@@ -25,7 +28,8 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
     RequestReceiver receiver;
     LinearLayout submitNowlayout;
     EditText nameEditTxt, phoneEditTxt, locationEdit, experienceEditTxt, skillEditTxt,strenghtEdit, salaryEdit,addressEditTxt,objectiveEdit,briefDesEdit,email_idEditTxt;
-
+    EditProfileActivity candidateActivity;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,8 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
 
     public void init(){
         receiver = this;
+        candidateActivity = new EditProfileActivity();
+        sharedPreferences = getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
         submitNowlayout = (LinearLayout)findViewById(R.id.submitNowlayout);
         nameEditTxt = (EditText)findViewById(R.id.nameEditTxt);
         phoneEditTxt = (EditText)findViewById(R.id.phoneEditTxt);
@@ -106,19 +112,30 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
     @Override
     public void requestFinished(String[] result) throws Exception {
         if (result[0].equals("1")){
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("user_name", "" + Global.candidatelist.get(0).getName());
+            editor.commit();
+
             final Dialog dialog = new Dialog(EditCandidateActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.alertpopup);
+            dialog.show();
             TextView massageTxtView = (TextView) dialog.findViewById(R.id.massageTxtView);
             massageTxtView.setText(result[1]);
             LinearLayout submitLayout = (LinearLayout)dialog.findViewById(R.id.submitLayout);
             submitLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    dialog.dismiss();
+
+                    EditProfileActivity.setcandidateData(EditCandidateActivity.this);
+                    MenuFragment.updateName(EditCandidateActivity.this);
                     finish();
+
                 }
             });
-            dialog.show();
+
         }
     }
 }

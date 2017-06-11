@@ -90,6 +90,13 @@ public class ProfileActivity extends SlidingFragmentActivity {
         String data = getIntent().getExtras().getString("position","");
         position = Integer.parseInt(data);
 
+        try{
+            getWindow().getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         slidMenuLayout = (LinearLayout)findViewById(R.id.slidMenuLayout);
         downloadTxtView = (TextView)findViewById(R.id.downloadTxtView);
         contactTxtView = (TextView)findViewById(R.id.contactTxtView);
@@ -140,7 +147,8 @@ public class ProfileActivity extends SlidingFragmentActivity {
         }
 
         try{
-            Picasso.with(getApplicationContext()).load(Global.candidatelist.get(position).getUserImage()).into(ProfileImage);
+            Picasso.with(getApplicationContext()).load(Global.candidatelist.get(position).getUserImage())
+                    .placeholder(R.drawable.placeholder).into(ProfileImage);
         }catch (Exception e){
 
         }
@@ -178,11 +186,22 @@ public class ProfileActivity extends SlidingFragmentActivity {
                 mailTxt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        /*Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                                 "mailto","", null));
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ConTact");
                         emailIntent.putExtra(Intent.EXTRA_TEXT,  "");
-                        startActivity(Intent.createChooser(emailIntent, "Send Email..."));
+                        startActivity(Intent.createChooser(emailIntent, "Send Email..."));*/
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("message/rfc822");
+                        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{Global.candidatelist.get(0).getEmail().toString()});
+                        i.putExtra(Intent.EXTRA_SUBJECT, "");
+                        i.putExtra(Intent.EXTRA_TEXT   , "");
+                        try {
+                            startActivity(Intent.createChooser(i, "Send mail..."));
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(ProfileActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                        }
+
                         dialog.dismiss();
                     }
                 });
@@ -190,12 +209,8 @@ public class ProfileActivity extends SlidingFragmentActivity {
                 messageTxt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String smsBody= "";
-                        Uri uri = Uri.parse("smsto:0800000123");
-                        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                        sendIntent.putExtra("sms_body", smsBody);
-                        sendIntent.setType("vnd.android-dir/mms-sms");
-                         startActivity(sendIntent);
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
+                                + Global.candidatelist.get(0).getPhone())));
                         dialog.dismiss();
                     }
                 });

@@ -336,12 +336,25 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
 
                             try {
                                 JSONObject data =  object.getJSONObject("data");
-                                Constant.USER_ID = data.getString("user_id");
+
                                 try{
-                                    Constant.USER_NAME = data.getString("username");
+                                    Constant.USER_ID = data.getString("user_id");
+                                    Constant.USER_NAME = data.getString("candidate_name");
+                                    Constant.USER_IMAGE = data.getString("candidate_image");
+                                    Constant.EMAIL = data.getString("email");
+                                    Constant.PHONE_NUMBER = data.getString("phone");
+                                    Constant.LOCATION = data.getString("location");
+                                    Constant.USER_TYPE = data.getString("user_type");
                                 }catch (Exception e){
-                                    e.printStackTrace();
+
+                                    Constant.USER_ID = data.getString("user_id");
                                     Constant.COMPANY_NAME = data.getString("company_name");
+                                    Constant.USER_IMAGE = data.getString("company_image");
+                                    Constant.EMAIL = data.getString("email");
+                                    Constant.PHONE_NUMBER = data.getString("phone");
+                                    Constant.LOCATION = data.getString("location");
+                                    Constant.USER_TYPE = data.getString("user_type");
+                                    e.printStackTrace();
                                 }
 
                                 Constant.EMAIL = data.getString("email");
@@ -1025,7 +1038,7 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                     String line="0";
                     String result = "";
                     JSONObject object = null;
-                    Global.candidatelist.clear();
+                    Global.companylist.clear();
                     while ((line = reader.readLine()) != null) {
                         sb.append(line + "\n");
                         result = sb.toString();
@@ -1038,25 +1051,22 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                             updateemployer[1] = object.getString("message");
                             try {
                                 JSONObject object1 = object.getJSONObject("data");
-                                CandidateDTO candidateDTO = new CandidateDTO();
+                                CompanyDTO companyDTO = new CompanyDTO();
 
-                                candidateDTO.setName(object1.getString("name"));
-                                candidateDTO.setPhone(object1.getString("phone"));
-                                candidateDTO.setGender(object1.getString("gender"));
-                                candidateDTO.setLocation(object1.getString("location"));
-                                candidateDTO.setExperience(object1.getString("experience"));
-                                candidateDTO.setSkill(object1.getString("skill"));
-                                candidateDTO.setStrength(object1.getString("strength"));
-                                candidateDTO.setExpected_salary(object1.getString("expected_salary"));
-                                candidateDTO.setAddress(object1.getString("address"));
-                                candidateDTO.setPrefered_location(object1.getString("prefered_location"));
-                                candidateDTO.setObjective(object1.getString("objective"));
-                                candidateDTO.setBrief_description(object1.getString("brief_description"));
-                                candidateDTO.setEmail(object1.getString("email"));
-                                candidateDTO.setUser_type(object1.getString("user_type"));
+                                companyDTO.setCompany_name(object1.getString("company_name"));
+                                companyDTO.setContact_person(object1.getString("contact_person"));
+                                companyDTO.setPhone(object1.getString("phone"));
+                                companyDTO.setCurrent_requirment(object1.getString("current_requirment"));
+                                companyDTO.setExperience(object1.getString("experience"));
+                                companyDTO.setSkill(object1.getString("skill"));
+                                companyDTO.setJob_role(object1.getString("job_role"));
+                                companyDTO.setLocation(object1.getString("location"));
+                                companyDTO.setAddress(object1.getString("address"));
+                                companyDTO.setEmail(object1.getString("email"));
+                                companyDTO.setUser_type(object1.getString("user_type"));
 
-                                Global.candidatelist.add(candidateDTO);
-                                Log.e("","Size of list : "+Global.candidatelist.size());
+                                Global.companylist.add(companyDTO);
+                                Log.e("","Size of list : "+Global.companylist.size());
 
                             }catch (Exception e){
                                 e.printStackTrace();
@@ -1074,261 +1084,143 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                 }
                 break;
 
-            case Constant.UPDATE_EMPLOYER_PIC:
+         case Constant.UPDATE_EMPLOYER_PIC :
 
-                String[] freesign = new String[3];
+                String[] updateCompanyPic = new String[3];
                 httppost = new HttpPost(Constant.UPDATE_EMPLOYER_PIC_URL);
-                Log.e("", "Constant.SIGNUP_URL : " + Constant.UPDATE_EMPLOYER_PIC_URL);
 
                 try {
-                    MultipartEntity entity = new MultipartEntity();
                     try {
-                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
-                        File file = new File(Constant.USER_IMAGE);
-                        FileBody bin = new FileBody(file);
-                        entity.addPart("profile_image", bin);
-                    } catch (Exception e) {
-                        Log.v("Exception in Image", "" + e);
-                    }
-                    entity.addPart("company_id", new StringBody(Constant.EMAIL));
 
-                    httppost.setEntity(entity);
-                    try {
-                        response1 = httpclient.execute(httppost);
-                        Log.d("myapp", "response " + response1.getEntity());
-                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
+                        MultipartEntity multipartEntity = new MultipartEntity();
+                        Log.e("","URL "+Constant.UPDATE_EMPLOYER_PIC_URL);
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    InputStream inputStream = response1.getEntity().getContent();
-                    InputStreamReader inputStreamReader = new InputStreamReader(
-                            inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(
-                            inputStreamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String bufferedStrChunk = null;
-                    String encodeRes = "";
-                    JSONObject object = null;
+                        try{
+                            File imgfile= new File(Constant.USER_IMAGE);
+                            FileBody bin = new FileBody(imgfile);
+                            multipartEntity.addPart("profile_image",bin);
+                        }
+                        catch(Exception e){
+                            Log.v("Exception in Image", ""+e);
+                        }
 
-                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(bufferedStrChunk);
-                        encodeRes = stringBuilder.toString();
+
+                        multipartEntity.addPart("email",new StringBody(Constant.EMAIL));
+                        Log.e("","USER_IMAGE : "+Constant.EMAIL);
+
+
+                        httppost.setEntity(multipartEntity);
+
                         try {
-                            object = new JSONObject(encodeRes);
-                            Log.d("", "jsonObj responce... " + object);
-                            freesign[0] = object.getString("success");
-                            freesign[1] = object.getString("message");
-                            Constant.USER_ID = object.getString("user_id");
+                            response1 = httpclient.execute(httppost);
+                            Log.d("myapp", "response " +response1.getEntity());
+                            Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
 
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                response1.getEntity().getContent(), "UTF-8"));
+                        String sResponse;
+                        StringBuilder s = new StringBuilder();
+                        while ((sResponse = reader.readLine()) != null) {
+                            s = s.append(sResponse);
+                        }
+                        try {
+                            JSONObject jobj = new JSONObject(s.toString());
+                            Log.d("","jsonObj responce... "+jobj);
+                            updateCompanyPic[0] = "10"+jobj.getString("success");
+                            updateCompanyPic[1] = jobj.getString("message");
+
+                            try {
+                                JSONObject dataObject = jobj.getJSONObject("data");
+                                Constant.USER_IMAGE = dataObject.getString("profile_pic");
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            freesign[0] = object.getString("success");
-                            freesign[1] = object.getString("message");
                         }
-                        break;
+
+                        return updateCompanyPic;
+                    } catch (Exception e) {
+                        // TODO: handle exception
                     }
-
-                    return freesign;
-
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-
                 break;
 
+            case Constant.UPDATE_CADIDATE_PIC :
 
-           /* case Constant.UPDATE_EMPLOYER_PIC:
-
-                String[] updateempPic = new String[3];
-                httppost = new HttpPost(Constant.UPDATE_EMPLOYER_PIC_URL);
-                Log.e("", "Constant.SIGNUP_URL : " + Constant.UPDATE_EMPLOYER_PIC_URL);
-                try {
-                    MultipartEntity entity = new MultipartEntity();
-                    try {
-                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
-                        File file = new File(Constant.USER_IMAGE);
-                        FileBody bin = new FileBody(file);
-                        entity.addPart("profile_image", bin);
-                    } catch (Exception e) {
-                        Log.v("Exception in Image", "" + e);
-                    }
-                    entity.addPart("email", new StringBody(Constant.EMAIL));
-
-                    httppost.setEntity(entity);
-                    try {
-                        response1 = httpclient.execute(httppost);
-                        Log.d("myapp", "response " + response1.getEntity());
-                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    InputStream inputStream = response1.getEntity().getContent();
-                    InputStreamReader inputStreamReader = new InputStreamReader(
-                            inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(
-                            inputStreamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String bufferedStrChunk = null;
-                    String encodeRes = "";
-                    JSONObject jsondata = null;
-                    JSONObject object = null;
-                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(bufferedStrChunk);
-                        encodeRes = stringBuilder.toString();
-                        try {
-                            object = new JSONObject(encodeRes);
-                            Log.d("", "jsonObj responce... " + object);
-                            updateempPic[0] = "10"+object.getString("success");
-                            updateempPic[1] = object.getString("message");
-
-                            jsondata = object.getJSONObject("data");
-                            Constant.USER_IMAGE = jsondata.getString("profile_pic");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            updateempPic[0] = object.getString("success");
-                            updateempPic[1] = object.getString("message");
-                        }
-                        break;
-                    }
-                    return updateempPic;
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-                break;*/
-
-            case Constant.UPDATE_CADIDATE_PIC:
-
-                String[] updatepic = new String[3];
+                String[] updateCandidatePic = new String[3];
                 httppost = new HttpPost(Constant.UPDATE_CANDIDATE_PIC_URL);
-                Log.e("", "Constant.SIGNUP_URL : " + Constant.UPDATE_CANDIDATE_PIC_URL);
 
                 try {
-                    MultipartEntity entity = new MultipartEntity();
                     try {
-                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
-                        File file = new File(Constant.USER_IMAGE);
-                        FileBody bin = new FileBody(file);
-                        entity.addPart("profile_image", bin);
-                    } catch (Exception e) {
-                        Log.v("Exception in Image", "" + e);
-                    }
-                    entity.addPart("company_id", new StringBody(Constant.EMAIL));
 
-                    httppost.setEntity(entity);
-                    try {
-                        response1 = httpclient.execute(httppost);
-                        Log.d("myapp", "response " + response1.getEntity());
-                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
+                        MultipartEntity multipartEntity = new MultipartEntity();
+                        Log.e("","URL "+Constant.UPDATE_CANDIDATE_PIC_URL);
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    InputStream inputStream = response1.getEntity().getContent();
-                    InputStreamReader inputStreamReader = new InputStreamReader(
-                            inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(
-                            inputStreamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String bufferedStrChunk = null;
-                    String encodeRes = "";
-                    JSONObject object = null;
+                        try{
+                            File imgfile= new File(Constant.USER_IMAGE);
+                            FileBody bin = new FileBody(imgfile);
+                            multipartEntity.addPart("profile_image",bin);
+                        }
+                        catch(Exception e){
+                            Log.v("Exception in Image", ""+e);
+                        }
+                        multipartEntity.addPart("email",new StringBody(Constant.EMAIL));
+                        Log.e("","USER_IMAGE : "+Constant.EMAIL);
 
-                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(bufferedStrChunk);
-                        encodeRes = stringBuilder.toString();
+
+                        httppost.setEntity(multipartEntity);
+
                         try {
-                            object = new JSONObject(encodeRes);
-                            Log.d("", "jsonObj responce... " + object);
-                            updatepic[0] = object.getString("success");
-                            updatepic[1] = object.getString("message");
-                            Constant.USER_ID = object.getString("user_id");
+                            response1 = httpclient.execute(httppost);
+                            Log.d("myapp", "response " +response1.getEntity());
+                            Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
+                        } catch (ClientProtocolException e) {
+                            e.printStackTrace();
 
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                response1.getEntity().getContent(), "UTF-8"));
+                        String sResponse;
+                        StringBuilder s = new StringBuilder();
+                        while ((sResponse = reader.readLine()) != null) {
+                            s = s.append(sResponse);
+                        }
+                        try {
+                            JSONObject jobj = new JSONObject(s.toString());
+                            Log.d("","jsonObj responce... "+jobj);
+                            updateCandidatePic[0] = "10"+jobj.getString("success");
+                            updateCandidatePic[1] = jobj.getString("message");
+
+                            try {
+                                JSONObject dataObject = jobj.getJSONObject("data");
+                                Constant.USER_IMAGE = dataObject.getString("profile_pic");
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            updatepic[0] = object.getString("success");
-                            updatepic[1] = object.getString("message");
                         }
-                        break;
+
+                        return updateCandidatePic;
+                    } catch (Exception e) {
+                        // TODO: handle exception
                     }
-
-                    return updatepic;
-
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-
                 break;
-
-           /* case Constant.UPDATE_CADIDATE_PIC:
-
-                String[] candidate_pic = new String[3];
-                httppost = new HttpPost(Constant.UPDATE_CANDIDATE_PIC_URL);
-                Log.e("", "Constant.UPDATE_CANDIDATE_PIC_URL : " + Constant.UPDATE_CANDIDATE_PIC_URL);
-                try {
-                    MultipartEntity entity = new MultipartEntity();
-                    try {
-                        Log.e("", "ImagePathe : " + Constant.USER_IMAGE);
-                        File file = new File(Constant.USER_IMAGE);
-                        FileBody bin = new FileBody(file);
-                        entity.addPart("profile_image", bin);
-                    } catch (Exception e) {
-                        Log.v("Exception in Image", "" + e);
-                    }
-                    entity.addPart("email", new StringBody(Constant.EMAIL));
-
-                    httppost.setEntity(entity);
-                    try {
-                        response1 = httpclient.execute(httppost);
-                        Log.d("myapp", "response " + response1.getEntity());
-                        Log.e("myapp", "response.. statau.." + response1.getStatusLine().getStatusCode());
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    InputStream inputStream = response1.getEntity().getContent();
-                    InputStreamReader inputStreamReader = new InputStreamReader(
-                            inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(
-                            inputStreamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String bufferedStrChunk = null;
-                    String encodeRes = "";
-                    JSONObject jsondata = null;
-                    JSONObject object = null;
-                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(bufferedStrChunk);
-                        encodeRes = stringBuilder.toString();
-                        try {
-                            object = new JSONObject(encodeRes);
-                            Log.d("", "jsonObj responce... " + object);
-                            candidate_pic[0] ="10"+ object.getString("success");
-                            candidate_pic[1] = object.getString("message");
-                            jsondata = object.getJSONObject("data");
-                            Constant.USER_IMAGE = jsondata.getString("profile_pic");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            candidate_pic[0] = object.getString("success");
-                            candidate_pic[1] = object.getString("message");
-                        }
-                        break;
-                    }
-                    return candidate_pic;
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-                break;*/
 
             case Constant.EMPLOYEETOP_TEN:
                 String[] employeeTen = new String[3];
@@ -1401,10 +1293,8 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                                     companyDTO.setCurrent_requirment(object.getString("current_requirment"));
                                     companyDTO.setExperience(object.getString("experience"));
                                     companyDTO.setSkill(object.getString("skill"));
-//                                companyDTO.setJob_role(object1.getString("job_role"));
                                     companyDTO.setLocation(object.getString("location"));
                                     companyDTO.setAddress(object.getString("address"));
-//                                companyDTO.setExp_date(object1.getString("exp_date"));
                                     companyDTO.setEmppackage(object.getString("package"));
                                     companyDTO.setAmount(object.getString("amount"));
                                     companyDTO.setUser_type(object.getString("user_type"));
@@ -1569,7 +1459,7 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                     String line="0";
                     String result = "";
                     JSONObject object = null;
-                    Global.candidatelist.clear();
+                    Global.searchcandidatelist.clear();
                     while ((line = reader.readLine()) != null) {
                         sb.append(line + "\n");
                         result = sb.toString();
@@ -1602,10 +1492,10 @@ public class WebserviceHelper extends AsyncTask<Void, Void, String[]> {
                                     candidateDTO.setDesignation(object1.getString("designation"));
                                     candidateDTO.setExperience(object1.getString("experience"));
 
-                                    Global.candidatelist.add(candidateDTO);
+                                    Global.searchcandidatelist.add(candidateDTO);
                                 }
 
-                                Log.e("","Size : "+Global.candidatelist.size());
+                                Log.e("","Size : "+Global.searchcandidatelist.size());
 
                             }catch (Exception e){
                                 e.printStackTrace();

@@ -3,14 +3,17 @@ package com.example.dell.job;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,6 +41,7 @@ public class SearchActivity extends SlidingFragmentActivity implements RequestRe
     LinearLayout searchLayout, slidMenuLayout ;
     EmployeeSearchAdapter adapter;
     SlidingMenu sm;
+    RelativeLayout layout;
     RelativeLayout filterLayout, parentLayout;
     boolean doubleBackToExitPressedOnce = false;
     SharedPreferences sharedPreferences;
@@ -65,8 +69,18 @@ public class SearchActivity extends SlidingFragmentActivity implements RequestRe
 
     public void init(){
 
+        try{
+            getWindow().getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
         receiver = this;
+        layout = (RelativeLayout)findViewById(R.id.layout);
+
+
         searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
         slidMenuLayout = (LinearLayout) findViewById(R.id.slidMenuLayout);
         skillesediTxt = (EditText) findViewById(R.id.skillesediTxt);
@@ -149,6 +163,9 @@ public class SearchActivity extends SlidingFragmentActivity implements RequestRe
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 if(skillesediTxt.getText().length()!=0){
                     if(locationEdit.getText().length()!=0){
 

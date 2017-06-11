@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -26,8 +27,8 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="90sp"
                     android:layout_height="90sp"
-                    android:src="@drawable/user"
-                    android:id="@+id/imageView3"
+                    android:src="@drawable/placeholder"
+                    android:id="@+id/userImage"
                     app:civ_border_width="2sp"
                     app:civ_border_color="@color/colorAccent"/>
 
@@ -402,7 +403,7 @@
 
 
                 <LinearLayout
-                    android:layout_marginBottom="40sp"
+                    android:layout_marginBottom="120sp"
                     android:id="@+id/logoutLayout"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"

@@ -109,7 +109,6 @@ public class LoginActivity extends AppCompatActivity implements RequestReceiver{
                            SharedPreferences.Editor editor = rememberMe.edit();
                            editor.putString("email", "" +  input_username.getText().toString());
                            editor.putString("password", "" + input_password.getText().toString());
-
                            editor.commit();
                        }else {
                            SharedPreferences.Editor editor = rememberMe.edit();
@@ -179,6 +178,7 @@ public class LoginActivity extends AppCompatActivity implements RequestReceiver{
     @Override
     public void requestFinished(String[] result) throws Exception {
         if(result[0].equals("1")){
+
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("status", "1");
             editor.putString("user_id", "" + Constant.USER_ID);
@@ -188,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements RequestReceiver{
             editor.putString("phone", "" + Constant.PHONE_NUMBER);
             editor.putString("location", "" + Constant.LOCATION);
             editor.putString("user_type", "" + Constant.USER_TYPE);
-
+            editor.putString("user_Image", "" + Constant.USER_IMAGE);
             editor.commit();
 
             Intent intent = new Intent(LoginActivity.this, SearchActivity.class);

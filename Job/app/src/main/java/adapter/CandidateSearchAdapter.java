@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dell.job.EditProfileActivity;
 import com.example.dell.job.ProfileActivity;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
 
 import dtos.CandidateDTO;
 import dtos.CompanyDTO;
+import utils.Global;
+
+import static utils.Global.candidatelist;
 
 /**
  * Created by Suraj shakya on 11/8/16.
@@ -145,11 +149,21 @@ public class CandidateSearchAdapter extends BaseAdapter {
                     mailTxt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                    "mailto","", null));
+                            /*Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(candidateList.get(position).getEmail()
+                                    ,"", null));
                             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Invite Friend");
                             emailIntent.putExtra(Intent.EXTRA_TEXT,  "");
-                            activity.startActivity(Intent.createChooser(emailIntent, "Send Email..."));
+                            activity.startActivity(Intent.createChooser(emailIntent, "Send Email..."));*/
+                            Intent i = new Intent(Intent.ACTION_SEND);
+                            i.setType("message/rfc822");
+                            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{candidateList.get(position).getEmail().toString()});
+                            i.putExtra(Intent.EXTRA_SUBJECT, "");
+                            i.putExtra(Intent.EXTRA_TEXT   , "");
+                            try {
+                                activity.startActivity(Intent.createChooser(i, "Send mail..."));
+                            } catch (android.content.ActivityNotFoundException ex) {
+                                Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                            }
                             dialog.dismiss();
                         }
                     });
@@ -157,12 +171,8 @@ public class CandidateSearchAdapter extends BaseAdapter {
                     messageTxt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String smsBody= "";
-                            Uri uri = Uri.parse("smsto:0800000123");
-                            Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                            sendIntent.putExtra("sms_body", smsBody);
-                            sendIntent.setType("vnd.android-dir/mms-sms");
-                            activity.startActivity(sendIntent);
+                            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
+                                    + candidatelist.get(position).getPhone())));
                             dialog.dismiss();
                         }
                     });

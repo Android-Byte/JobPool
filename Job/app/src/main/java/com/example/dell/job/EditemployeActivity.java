@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import utils.Constant;
 import utils.Global;
@@ -32,6 +33,8 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
     ScrollView parentLayout;
     SharedPreferences sharedPreferences;
     MenuFragment menuFragment;
+    EditProfileActivity editProfileActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,8 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
     public void init(){
 
         receiver = this;
-        menuFragment = new MenuFragment();
+
+        editProfileActivity = new EditProfileActivity();
         sharedPreferences = this.getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
         nameCompanyEditTxt = (EditText)findViewById(R.id.nameCompanyEditTxt);
         contactPersonEditTxt = (EditText)findViewById(R.id.contactPersonEditTxt);
@@ -116,7 +120,7 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("company_name", "" + Global.companylist.get(0).getCompany_name());
                 editor.commit();
-                menuFragment.updateName();
+                menuFragment.updateName(EditemployeActivity.this);
                 final Dialog dialog = new Dialog(EditemployeActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.alertpopup);
@@ -127,7 +131,9 @@ public class EditemployeActivity extends AppCompatActivity implements RequestRec
                 submitLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       finish();
+                editProfileActivity.setcompanyData(EditemployeActivity.this);
+                dialog.dismiss();
+                finish();
                     }
                 });
 

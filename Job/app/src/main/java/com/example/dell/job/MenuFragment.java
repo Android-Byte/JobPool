@@ -5,20 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.TagLostException;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 
 import utils.Constant;
 import utils.RequestReceiver;
@@ -39,6 +45,8 @@ public class MenuFragment extends Fragment implements RequestReceiver{
     RequestReceiver receiver;
     static  SharedPreferences sharedPreferences;
     SearchActivity searchActivity;
+    static ImageView userImage;
+    ScrollView parentLayout;
 
     public static Fragment newInstance() {
         MenuFragment fragment = new MenuFragment();
@@ -55,6 +63,7 @@ public class MenuFragment extends Fragment implements RequestReceiver{
         rootView = inflater.inflate(R.layout.sliding_menu_items, container, false);
         sharedPreferences = getActivity().getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
         receiver = this;
+        parentLayout = (ScrollView)rootView.findViewById(R.id.parentLayout);
         paymentLayout = (LinearLayout)rootView.findViewById(R.id.paymentLayout);
         profileLayout = (LinearLayout)rootView.findViewById(R.id.profileLayout);
         searchLayout = (LinearLayout)rootView.findViewById(R.id.searchLayout);
@@ -67,36 +76,57 @@ public class MenuFragment extends Fragment implements RequestReceiver{
         userNameTxt = (TextView)rootView.findViewById(R.id.userNameTxt);
         searchCandidate = (TextView)rootView.findViewById(R.id.searchCandidate);
         userTxt = (TextView)rootView.findViewById(R.id.userTxt) ;
+        userImage = (ImageView)rootView.findViewById(R.id.userImage);
 
         searchActivity = new SearchActivity();
         Constant.EMAIL = sharedPreferences.getString("email","");
 
         if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
             searchCandidate.setText("Search Company");
-
             userNameTxt.setText(sharedPreferences.getString("user_name",""));
+            try {
+                Picasso.with(getActivity()).load(sharedPreferences.getString("user_Image","")).placeholder(R.drawable.placeholder).into(userImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }else {
             searchCandidate.setText("Search Candidates");
             userTxt.setVisibility(View.GONE);
             userNameTxt.setText(sharedPreferences.getString("company_name",""));
+            try {
+                Picasso.with(getActivity()).load(sharedPreferences.getString("user_Image","")).placeholder(R.drawable.placeholder).into(userImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
+      /*  String str = Build.BRAND;
+        Log.e("",""+str);
+        if(str.equalsIgnoreCase("motorola")){
+            ScrollView.LayoutParams relativeParams = (ScrollView.LayoutParams)parentLayout.getLayoutParams();
+            relativeParams.setMargins(0, 0, 0, 40);  // left, top, right, bottom
+            parentLayout.setLayoutParams(relativeParams);
+        }
+*/
         return rootView;
     }
 
-    public static void updateName (){
-
+    public static void updateName (Context context){
         if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
             userNameTxt.setText(sharedPreferences.getString("user_name",""));
+            try {
+                Picasso.with(context).load(sharedPreferences.getString("user_Image","")).placeholder(R.drawable.placeholder).into(userImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }else {
             userNameTxt.setText(sharedPreferences.getString("company_name",""));
+            try {
+                Picasso.with(context).load(sharedPreferences.getString("user_Image","")).placeholder(R.drawable.placeholder).into(userImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -123,11 +153,9 @@ public class MenuFragment extends Fragment implements RequestReceiver{
             @Override
             public void onClick(View view) {
 
-
                 if(sharedPreferences.getString("user_type","").equalsIgnoreCase("candidate")){
                     Intent intent = new Intent(getActivity(),CandidatepackageActivity.class);
                     startActivity(intent);
-
                 }else {
                     Intent intent = new Intent(getActivity(),SelectPackageActivity.class);
                     startActivity(intent);

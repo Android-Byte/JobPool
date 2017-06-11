@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,18 +58,19 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
     RelativeLayout parentLayout;
     TextView editProfileTxtView;
 
-    ImageView UserProfileImage;
-    TextView nameTxt,cityTxt, skillesTxt, experiencetTxt, addressTxt, emailTxt, contactTxt, aboutUsTxt;
+    static ImageView UserProfileImage;
+    static  TextView nameTxt,cityTxt, skillesTxt, experiencetTxt, addressTxt, emailTxt, contactTxt, aboutUsTxt;
 
     LinearLayout bottomLayout, expLayout, skillesLayout;
-    SharedPreferences sharedPreferences;
+    static  SharedPreferences sharedPreferences;
     MarshMallowPermission marshMallowPermission;
+    MenuFragment menuFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile_activity);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setBehindView();
         sm = getSlidingMenu();
         sm.setShadowWidthRes(R.dimen.shadow_width);
@@ -83,6 +86,15 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
     }
 
     public void init(){
+
+        try{
+            getWindow().getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        menuFragment = new MenuFragment();
         receiver = this;
         marshMallowPermission = new MarshMallowPermission(EditProfileActivity.this);
         sharedPreferences = getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
@@ -107,6 +119,15 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
         Constant.EMAIL = sharedPreferences.getString("email","");
 
 
+ /*       String str = Build.BRAND;
+        Log.e("",""+str);
+
+        if(str.equalsIgnoreCase("motorola")){
+            LinearLayout.LayoutParams relativeParams = (LinearLayout.LayoutParams)bottomLayout.getLayoutParams();
+            relativeParams.setMargins(0, 0, 0, 40);  // left, top, right, bottom
+            bottomLayout.setLayoutParams(relativeParams);
+        }*/
+
         if(sharedPreferences.getString("user_type","").equals("candidate")){
             getCandidateSerivice();
         }else {
@@ -114,28 +135,6 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
         }
 
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(sharedPreferences.getString("user_type","").equals("candidate")){
-            try{
-                getCandidateSerivice();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }else {
-            try{
-                getCompanySerivice();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -172,17 +171,28 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
         getprofile.execute();
     }
 
-    public void setcompanyData(){
+    public void setcompanyData(Context context){
 
         try {
-            expLayout.setVisibility(View.GONE);
-            skillesLayout.setVisibility(View.GONE);
+            try{
+                expLayout.setVisibility(View.GONE);
+                skillesLayout.setVisibility(View.GONE);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            try {
+                Picasso.with(context).load(sharedPreferences.getString("user_Image","")).placeholder(R.drawable.placeholder).into(UserProfileImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             if(!Global.companylist.get(0).getCompany_name().equals("null")){
                 nameTxt.setText(Global.companylist.get(0).getCompany_name());
             }else {
                 nameTxt.setText("");
             }
-            if(!Global.companylist.get(0).getCompany_name().equals("null")){
+            if(!Global.companylist.get(0).getLocation().equals("null")){
                 cityTxt.setText(Global.companylist.get(0).getLocation());
             }else {
                 cityTxt.setText("");
@@ -210,9 +220,15 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
 
     }
 
-    public void setcandidateData(){
+    public static void setcandidateData(Context  context){
 
         try{
+
+            try {
+                Picasso.with(context).load(sharedPreferences.getString("user_Image","")).placeholder(R.drawable.placeholder).into(UserProfileImage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             if(!Global.candidatelist.get(0).getName().equals("null")){
                 nameTxt.setText(Global.candidatelist.get(0).getName());
@@ -260,6 +276,7 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
 
     public void clickListener(){
 
+
         UserProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -270,12 +287,6 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
         editProfileTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /*if(sharedPreferences.getString("user_type","").equals("candidate")){
-                    candidateSerivice();
-                }else {
-                    employeeSerivice();
-                }*/
 
                 if(sharedPreferences.getString("user_type","").equals("candidate")){
                     Intent intent = new Intent(EditProfileActivity.this, EditCandidateActivity.class);
@@ -322,22 +333,36 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
     @Override
     public void requestFinished(String[] result) throws Exception {
             if(result[0].equals("01")){
-                setcompanyData();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("email", "" + Global.companylist.get(0).getEmail());
-                editor.putString("user_type", "" + Global.companylist.get(0).getUser_type());
-//                editor.putString("username",""+Global.companylist.get(0).getCompany_name());
-                editor.commit();
+
+                setcompanyData(EditProfileActivity.this);
             }else if(result[0].equals("001")){
-                setcandidateData();
-//                Toast.makeText(getApplicationContext(),""+Global.candidatelist.get(0).getEmail(),Toast.LENGTH_SHORT).show();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("user_Image", "" + Constant.USER_IMAGE);
-                editor.commit();
+                setcandidateData(EditProfileActivity.this);
+
             }else if(result[0].equals("101")){
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("user_Image", "" + Constant.USER_IMAGE);
                 editor.commit();
+
+                if(sharedPreferences.getString("user_type","").equals("candidate")){
+                    MenuFragment.updateName(EditProfileActivity.this);
+//                    Toast.makeText(getApplicationContext(),""+sharedPreferences.getString("user_Image",""),Toast.LENGTH_SHORT).show();
+                    Log.e("",""+sharedPreferences.getString("user_Image",""));
+                    try {
+                        Picasso.with(getApplicationContext()).load(Constant.USER_IMAGE).placeholder(R.drawable.placeholder).into(UserProfileImage);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else {
+                    MenuFragment.updateName(EditProfileActivity.this);
+//                    Toast.makeText(getApplicationContext(),""+sharedPreferences.getString("user_Image",""),Toast.LENGTH_SHORT).show();
+                    Log.e("",""+sharedPreferences.getString("user_Image",""));
+                    try {
+                        Picasso.with(getApplicationContext()).load(Constant.USER_IMAGE).placeholder(R.drawable.placeholder).into(UserProfileImage);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
             }
     }
 
@@ -395,9 +420,11 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
             String myfilePath = picturePath;
             File imgFile = new File(myfilePath);
 
-            Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,selectedImage);
             final Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             UserProfileImage.setImageBitmap(myBitmap);
+            Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,selectedImage);
+
+
             final Dialog dialog = new Dialog(EditProfileActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.upload_images);
@@ -444,8 +471,9 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,tempUri);
+
                 UserProfileImage.setImageBitmap(thumbnail);
+                Constant.USER_IMAGE = getRealPathFromUri(EditProfileActivity.this,tempUri);
                 final Dialog dialog = new Dialog(EditProfileActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.upload_images);
@@ -472,8 +500,6 @@ public class EditProfileActivity extends SlidingFragmentActivity implements Requ
                         }
                     }
                 });
-
-
 
             }
 
