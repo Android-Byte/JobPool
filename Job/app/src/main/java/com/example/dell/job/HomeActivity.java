@@ -296,6 +296,9 @@ public class HomeActivity extends FragmentActivity implements GoogleApiClient.On
         findContactLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                 if(skillesediTxt.getText().length()!=0){
                     if(locationEdit.getText().length()!=0){
 

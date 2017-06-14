@@ -43,7 +43,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
                     android:textSize="@dimen/medium_font"
-
                     android:hint="COMPANY NAME"
                     />
             </android.support.design.widget.TextInputLayout>

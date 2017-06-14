@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parentLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true">
     <LinearLayout
@@ -40,7 +41,7 @@
                 <EditText android:id="@+id/nameEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:textSize="@dimen/medium_font"
                     android:hint="NAME"
                     />
@@ -74,7 +75,7 @@
                 <EditText android:id="@+id/locationEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:textSize="@dimen/medium_font"
                     android:hint="LOCATION" />
             </android.support.design.widget.TextInputLayout>
@@ -107,7 +108,7 @@
                 <EditText android:id="@+id/skillEditTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:textSize="@dimen/medium_font"
                     android:hint="SKILLES" />
             </android.support.design.widget.TextInputLayout>

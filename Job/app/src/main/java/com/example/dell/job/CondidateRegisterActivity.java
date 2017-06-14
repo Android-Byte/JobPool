@@ -26,7 +26,7 @@ import utils.WebserviceHelper;
 public class CondidateRegisterActivity extends Activity implements RequestReceiver{
 
     EditText nameEditTxt, useridEditTxt, email_idEditTxt, passwordEditTxt, phoneEditTxt;
-    CheckBox checkbox_male, checkbox_female;
+    CheckBox checkbox_male, checkbox_female,termsCondiationCheck;
     RelativeLayout parentLayout;
     LinearLayout registerNowLayout;
     RequestReceiver receiver;
@@ -50,6 +50,7 @@ public class CondidateRegisterActivity extends Activity implements RequestReceiv
 
         checkbox_male = (CheckBox)findViewById(R.id.checkbox_male);
         checkbox_female = (CheckBox)findViewById(R.id.checkbox_female);
+        termsCondiationCheck = (CheckBox)findViewById(R.id.termsCondiationCheck);
 
         registerNowLayout = (LinearLayout)findViewById(R.id.registerNowLayout);
         parentLayout = (RelativeLayout) findViewById(R.id.parentLayout);
@@ -104,12 +105,16 @@ public class CondidateRegisterActivity extends Activity implements RequestReceiv
                                 }else {
                                     Constant.GENDER = "Female";
                                 }
-                                Constant.NAME = nameEditTxt.getText().toString();
-                                Constant.USER_NAME = useridEditTxt.getText().toString();
-                                Constant.EMAIL = email_idEditTxt.getText().toString();
-                                Constant.PASSWORD = passwordEditTxt.getText().toString();
-                                Constant.PHONE_NUMBER = phoneEditTxt.getText().toString();
-                                callSerivice();
+                                if(termsCondiationCheck.isChecked()){
+                                    Constant.NAME = nameEditTxt.getText().toString();
+                                    Constant.USER_NAME = useridEditTxt.getText().toString();
+                                    Constant.EMAIL = email_idEditTxt.getText().toString();
+                                    Constant.PASSWORD = passwordEditTxt.getText().toString();
+                                    Constant.PHONE_NUMBER = phoneEditTxt.getText().toString();
+                                    callSerivice();
+                                }else {
+                                    Snackbar.make(parentLayout,"Select terms & Condition.!",Snackbar.LENGTH_SHORT).show();
+                                }
                             }else {
                                 Snackbar.make(parentLayout,"Select Gender!",Snackbar.LENGTH_SHORT).show();
                             }

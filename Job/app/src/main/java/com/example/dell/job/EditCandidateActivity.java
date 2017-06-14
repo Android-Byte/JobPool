@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import utils.WebserviceHelper;
 public class EditCandidateActivity extends Activity implements RequestReceiver {
 
     Button saveandcontinue;
+    ScrollView parentLayout;
     RequestReceiver receiver;
     LinearLayout submitNowlayout;
     EditText nameEditTxt, phoneEditTxt, locationEdit, experienceEditTxt, skillEditTxt,strenghtEdit, salaryEdit,addressEditTxt,objectiveEdit,briefDesEdit,email_idEditTxt;
@@ -41,6 +45,7 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
     }
 
     public void init(){
+
         receiver = this;
         candidateActivity = new EditProfileActivity();
         sharedPreferences = getSharedPreferences("loginstatus", Context.MODE_PRIVATE);
@@ -56,7 +61,7 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
         objectiveEdit = (EditText)findViewById(R.id.objectiveEdit);
         briefDesEdit = (EditText)findViewById(R.id.briefDesEdit);
         email_idEditTxt = (EditText)findViewById(R.id.email_idEditTxt);
-
+        parentLayout = (ScrollView)findViewById(R.id.parentLayout);
         setprofileData();
     }
 
@@ -68,18 +73,63 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
 
     public  void setprofileData(){
         try {
+            if(!Global.candidatelist.get(0).getName().equals("null")){
+                nameEditTxt.setText(Global.candidatelist.get(0).getName());
+            }else {
+                nameEditTxt.setText("");
+            }
+            if(!Global.candidatelist.get(0).getPhone().equals("null")){
+                phoneEditTxt.setText(Global.candidatelist.get(0).getPhone());
+            }else {
+                phoneEditTxt.setText("");
+            }
+            if(!Global.candidatelist.get(0).getLocation().equals("null")){
+                locationEdit.setText(Global.candidatelist.get(0).getLocation());
+            }else {
+                locationEdit.setText("");
+            }
+            if(!Global.candidatelist.get(0).getExperience().equals("null")){
+                experienceEditTxt.setText(Global.candidatelist.get(0).getExperience());
+            }else {
+                experienceEditTxt.setText("");
+            }
+            if(!Global.candidatelist.get(0).getSkill().equals("null")){
+                skillEditTxt.setText(Global.candidatelist.get(0).getSkill());
+            }else {
+                skillEditTxt.setText("");
+            }
+            if(!Global.candidatelist.get(0).getStrength().equals("null")){
+                strenghtEdit.setText(Global.candidatelist.get(0).getStrength());
+            }else {
+                strenghtEdit.setText("");
+            }
+            if(!Global.candidatelist.get(0).getExpected_salary().equals("null")){
+                salaryEdit.setText(Global.candidatelist.get(0).getExpected_salary());
+            }else {
+                salaryEdit.setText("");
+            }
 
-            nameEditTxt.setText(Global.candidatelist.get(0).getName());
-            phoneEditTxt.setText(Global.candidatelist.get(0).getPhone());
-            locationEdit.setText(Global.candidatelist.get(0).getLocation());
-            experienceEditTxt.setText(Global.candidatelist.get(0).getExperience());
-            skillEditTxt.setText(Global.candidatelist.get(0).getSkill());
-            strenghtEdit.setText(Global.candidatelist.get(0).getStrength());
-            salaryEdit.setText(Global.candidatelist.get(0).getExpected_salary());
-            addressEditTxt.setText(Global.candidatelist.get(0).getAddress());
-            objectiveEdit.setText(Global.candidatelist.get(0).getObjective());
-            briefDesEdit.setText(Global.candidatelist.get(0).getBrief_description());
-            email_idEditTxt.setText(Global.candidatelist.get(0).getEmail());
+            if(!Global.candidatelist.get(0).getAddress().equals("null")){
+                addressEditTxt.setText(Global.candidatelist.get(0).getAddress());
+            }else {
+                addressEditTxt.setText("");
+            }
+            if(!Global.candidatelist.get(0).getObjective().equals("null")){
+                objectiveEdit.setText(Global.candidatelist.get(0).getObjective());
+            }else {
+                objectiveEdit.setText("");
+            }
+            if(!Global.candidatelist.get(0).getBrief_description().equals("null")){
+                briefDesEdit.setText(Global.candidatelist.get(0).getBrief_description());
+            }else {
+                briefDesEdit.setText("");
+            }
+            if(!Global.candidatelist.get(0).getEmail().equals("null")){
+                email_idEditTxt.setText(Global.candidatelist.get(0).getEmail());
+            }else {
+                email_idEditTxt.setText("");
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -92,18 +142,73 @@ public class EditCandidateActivity extends Activity implements RequestReceiver {
             @Override
             public void onClick(View view) {
 
-                Constant.USER_NAME = nameEditTxt.getText().toString();
-                Constant.PHONE_NUMBER = phoneEditTxt.getText().toString();
-                Constant.LOCATION = locationEdit.getText().toString();
-                Constant.EXPERIENCE = experienceEditTxt.getText().toString();
-                Constant.SKILLES = skillEditTxt.getText().toString();
-                Constant.STRENGHT = strenghtEdit.getText().toString();
-                Constant.EXP_SALARY= salaryEdit.getText().toString();
-                Constant.ADDRESS = addressEditTxt.getText().toString();
-                Constant.OBJECTIVE = objectiveEdit.getText().toString();
-                Constant.BRIEFDESCRIPTION = briefDesEdit.getText().toString();
-                Constant.EMAIL= email_idEditTxt.getText().toString();
-                updateprofile();
+                if(nameEditTxt.getText().length()!=0){
+                    if(phoneEditTxt.getText().length()!=0){
+                        if(phoneEditTxt.getText().length()>=10){
+                            if(locationEdit.getText().length()!=0){
+                                if(experienceEditTxt.getText().length()!=0){
+                                    if(skillEditTxt.getText().length()!=0){
+                                        if(strenghtEdit.getText().length()!=0){
+                                            if(salaryEdit.getText().length()!=0){
+                                                if(addressEditTxt.getText().length()!=0){
+                                                    if(objectiveEdit.getText().length()!=0){
+                                                        if(briefDesEdit.getText().length()!=0){
+                                                            if(email_idEditTxt.getText().length()!=0){
+                                                                if(Constant.emailValidation(email_idEditTxt.getText().toString())){
+
+                                                                    Constant.USER_NAME = nameEditTxt.getText().toString();
+                                                                    Constant.PHONE_NUMBER = phoneEditTxt.getText().toString();
+                                                                    Constant.LOCATION = locationEdit.getText().toString();
+                                                                    Constant.EXPERIENCE = experienceEditTxt.getText().toString();
+                                                                    Constant.SKILLES = skillEditTxt.getText().toString();
+                                                                    Constant.STRENGHT = strenghtEdit.getText().toString();
+                                                                    Constant.EXP_SALARY= salaryEdit.getText().toString();
+                                                                    Constant.ADDRESS = addressEditTxt.getText().toString();
+                                                                    Constant.OBJECTIVE = objectiveEdit.getText().toString();
+                                                                    Constant.BRIEFDESCRIPTION = briefDesEdit.getText().toString();
+                                                                    Constant.EMAIL= email_idEditTxt.getText().toString();
+                                                                    updateprofile();
+
+                                                                }else {
+                                                                    Snackbar.make(parentLayout,"Enter valid email.!",Snackbar.LENGTH_SHORT).show();
+                                                                }
+                                                            }else {
+                                                                Snackbar.make(parentLayout,"Enter email.!",Snackbar.LENGTH_SHORT).show();
+                                                            }
+                                                        }else {
+                                                            Snackbar.make(parentLayout,"Enter about your self.!",Snackbar.LENGTH_SHORT).show();
+                                                        }
+                                                    }else {
+                                                        Snackbar.make(parentLayout,"Enter your objective.!",Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }else {
+                                                    Snackbar.make(parentLayout,"Enter your address.!",Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            }else {
+                                                Snackbar.make(parentLayout,"Enter your salary expectation.!",Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        }else {
+                                            Snackbar.make(parentLayout,"Enter your strength.!",Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    }else {
+                                        Snackbar.make(parentLayout,"Enter skilles.!",Snackbar.LENGTH_SHORT).show();
+                                    }
+                                }else {
+                                    Snackbar.make(parentLayout,"Enter youe work experience.!",Snackbar.LENGTH_SHORT).show();
+                                }
+                            }else {
+                                Snackbar.make(parentLayout,"Enter location.!",Snackbar.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Snackbar.make(parentLayout,"Enter valid phone number.!",Snackbar.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Snackbar.make(parentLayout,"Enter phone number.!",Snackbar.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Snackbar.make(parentLayout,"Enter name.!",Snackbar.LENGTH_SHORT).show();
+                }
+
             }
         });
 

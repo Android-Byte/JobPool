@@ -138,7 +138,6 @@ public class CandidateSearchAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
-
                 if(sharedPreferences.getString("status","").equals("1")){
                     final Dialog dialog = new Dialog(activity);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -150,7 +149,7 @@ public class CandidateSearchAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View view) {
                             /*Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(candidateList.get(position).getEmail()
-                                    ,"", null));
+                              ,"", null));
                             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Invite Friend");
                             emailIntent.putExtra(Intent.EXTRA_TEXT,  "");
                             activity.startActivity(Intent.createChooser(emailIntent, "Send Email..."));*/
